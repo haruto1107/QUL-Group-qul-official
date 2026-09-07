@@ -6,13 +6,27 @@
 <title>QUL Admin</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Noto Sans JP","Helvetica Neue",Arial,sans-serif;
   background:#f5f7fb;
   color:#111;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
 }
 
 header{
@@ -22,10 +36,10 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 20px;
+  padding:0 22px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
 
 .logo{
@@ -33,101 +47,77 @@ header{
   font-weight:800;
 }
 
-.header-user{
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
   font-size:13px;
-  opacity:.9;
 }
 
-.container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:30px 18px 60px;
+.header-logout{
+  background:rgba(255,255,255,.18);
+  border:0;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:9px;
 }
 
 /* LOGIN */
 
-.login-wrap{
-  max-width:460px;
-  margin:70px auto;
+#login{
+  min-height:calc(100vh - 64px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px 18px;
 }
 
-.card{
+.login-box{
+  width:min(430px,100%);
   background:#fff;
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 8px 30px rgba(0,0,0,.07);
+  padding:28px;
+  border-radius:22px;
+  box-shadow:0 12px 40px rgba(0,0,0,.08);
 }
 
-.card h1,
-.card h2{
-  margin-top:0;
+.login-box h1{
+  margin:0 0 8px;
 }
 
-input,
-textarea,
-select{
+.login-box p{
+  color:#666;
+}
+
+.login-input{
   width:100%;
-  padding:13px;
-  margin-top:7px;
-  margin-bottom:14px;
+  padding:14px;
   border:1px solid #ddd;
   border-radius:11px;
-  font-size:15px;
-  font-family:inherit;
+  margin:6px 0 14px;
+  outline:none;
 }
 
-textarea{
-  min-height:120px;
-  resize:vertical;
+.login-input:focus{
+  border-color:#809CCF;
 }
 
-label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
-}
-
-button{
+.primary{
+  width:100%;
   border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
   background:#809CCF;
   color:#fff;
-}
-
-button:hover{
-  opacity:.9;
-}
-
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.btn-secondary{
-  background:#eef1f6;
-  color:#222;
-}
-
-.btn-danger{
-  background:#222;
-}
-
-.btn-small{
-  padding:8px 11px;
-  font-size:12px;
-}
-
-#status{
-  margin-top:15px;
-  padding:12px;
+  padding:14px;
   border-radius:11px;
-  background:#f3f5f8;
-  white-space:pre-wrap;
+  font-weight:700;
+}
+
+#loginStatus{
+  margin-top:14px;
+  padding:12px;
+  border-radius:10px;
+  background:#f1f3f6;
   font-size:13px;
+  white-space:pre-wrap;
 }
 
 /* ADMIN */
@@ -136,7 +126,10 @@ button:disabled{
   display:none;
 }
 
-.dashboard{
+.layout{
+  max-width:1200px;
+  margin:auto;
+  padding:24px 18px 60px;
   display:grid;
   grid-template-columns:220px 1fr;
   gap:20px;
@@ -145,20 +138,27 @@ button:disabled{
 .sidebar{
   background:#fff;
   border-radius:18px;
-  padding:12px;
+  padding:10px;
   height:max-content;
   box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
 
-.nav-btn{
+.side-button{
   width:100%;
   text-align:left;
+  border:0;
   background:transparent;
-  color:#222;
-  margin-bottom:6px;
+  padding:13px;
+  border-radius:10px;
+  margin-bottom:5px;
+  font-weight:600;
 }
 
-.nav-btn.active{
+.side-button:hover{
+  background:#f0f3f8;
+}
+
+.side-button.active{
   background:#809CCF;
   color:#fff;
 }
@@ -175,25 +175,52 @@ button:disabled{
   display:block;
 }
 
-.top-title{
+.page-title{
   margin-bottom:20px;
 }
 
-.top-title h1{
+.page-title h1{
   margin:0 0 5px;
   font-size:28px;
 }
 
-.top-title p{
+.page-title p{
   margin:0;
-  color:#666;
+  color:#777;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+  margin-bottom:15px;
 }
 
 .action-row{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-bottom:18px;
+  margin-bottom:16px;
+}
+
+.action-button{
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  background:#809CCF;
+  color:#fff;
+  font-weight:700;
+}
+
+.gray-button{
+  background:#eef1f5;
+  color:#222;
+}
+
+.danger-button{
+  background:#222;
+  color:#fff;
 }
 
 .item{
@@ -201,120 +228,147 @@ button:disabled{
   border-radius:16px;
   padding:18px;
   margin-bottom:12px;
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
+  box-shadow:0 5px 18px rgba(0,0,0,.05);
 }
 
 .item-title{
   font-size:17px;
   font-weight:800;
-  margin-bottom:6px;
+  margin-bottom:7px;
 }
 
-.item-meta{
-  font-size:12px;
-  color:#777;
-  margin-bottom:8px;
-}
-
-.item-body{
-  color:#555;
+.item-description{
   white-space:pre-wrap;
-  margin-bottom:12px;
+  color:#555;
+  margin:10px 0;
+}
+
+.meta{
+  color:#777;
+  font-size:12px;
+  margin-bottom:10px;
 }
 
 .badge{
   display:inline-block;
   padding:4px 8px;
+  background:#edf1f7;
   border-radius:20px;
-  background:#edf1f8;
-  font-size:11px;
   margin-right:5px;
 }
 
 .empty{
-  background:#fff;
-  padding:30px;
-  border-radius:16px;
   text-align:center;
+  padding:35px;
   color:#777;
+  background:#fff;
+  border-radius:16px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.field{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+textarea.field{
+  min-height:120px;
+  resize:vertical;
+}
+
+.checkbox{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.checkbox input{
+  width:auto;
 }
 
 /* MODAL */
 
 .modal{
-  display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.45);
-  z-index:100;
+  display:none;
   align-items:center;
   justify-content:center;
   padding:20px;
+  background:rgba(0,0,0,.45);
+  z-index:100;
 }
 
-.modal.show{
+.modal.open{
   display:flex;
 }
 
 .modal-box{
-  background:#fff;
   width:min(600px,100%);
   max-height:90vh;
   overflow:auto;
+  background:#fff;
   border-radius:20px;
   padding:24px;
 }
 
+.modal-box h2{
+  margin-top:0;
+}
+
 .modal-actions{
   display:flex;
-  gap:8px;
   justify-content:flex-end;
-  margin-top:15px;
-}
-
-.check{
-  display:flex;
-  align-items:center;
   gap:8px;
-  margin:8px 0;
+  margin-top:10px;
 }
 
-.check input{
-  width:auto;
-  margin:0;
+.modal-actions button{
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 
 @media(max-width:700px){
 
   header{
-    height:auto;
-    min-height:60px;
-    padding:14px;
+    padding:0 14px;
   }
 
-  .header-user{
-    display:none;
+  .header-right{
+    font-size:11px;
   }
 
-  .dashboard{
+  .layout{
     grid-template-columns:1fr;
+    padding:15px 12px 40px;
   }
 
   .sidebar{
     display:flex;
     overflow-x:auto;
-    gap:6px;
+    gap:5px;
   }
 
-  .nav-btn{
-    min-width:max-content;
+  .side-button{
+    white-space:nowrap;
     width:auto;
     margin:0;
   }
 
-  .top-title h1{
+  .page-title h1{
     font-size:23px;
   }
 
@@ -324,9 +378,29 @@ button:disabled{
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
-  <div class="logo">QUL Admin</div>
-  <div class="header-user" id="headerUser"></div>
+
+  <div class="logo">
+    QUL Admin
+  </div>
+
+  <div class="header-right">
+
+    <span id="headerEmail"></span>
+
+    <button
+      class="header-logout"
+      onclick="logout()"
+    >
+      ログアウト
+    </button>
+
+  </div>
+
 </header>
 
 
@@ -336,47 +410,45 @@ button:disabled{
 
 <section id="login">
 
-  <div class="login-wrap">
+  <div class="login-box">
 
-    <div class="card">
+    <h1>QUL管理画面</h1>
 
-      <h1>QUL管理画面</h1>
+    <p>
+      QUL管理者アカウントでログインしてください。
+    </p>
 
-      <p>
-        QUL管理者アカウントでログインしてください。
-      </p>
+    <label>メールアドレス</label>
 
-      <label>メールアドレス</label>
+    <input
+      id="email"
+      class="login-input"
+      type="email"
+      autocomplete="email"
+      placeholder="メールアドレス"
+    >
 
-      <input
-        id="email"
-        type="email"
-        autocomplete="email"
-        placeholder="メールアドレス"
-      >
+    <label>パスワード</label>
 
-      <label>パスワード</label>
+    <input
+      id="password"
+      class="login-input"
+      type="password"
+      autocomplete="current-password"
+      placeholder="パスワード"
+    >
 
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-        placeholder="パスワード"
-      >
+    <button
+      id="loginButton"
+      class="primary"
+      type="button"
+      onclick="login()"
+    >
+      ログイン
+    </button>
 
-      <button
-        id="loginButton"
-        type="button"
-        onclick="login()"
-        style="width:100%"
-      >
-        ログイン
-      </button>
-
-      <div id="status">
-        JavaScript確認中…
-      </div>
-
+    <div id="loginStatus">
+      JavaScript確認中…
     </div>
 
   </div>
@@ -390,169 +462,262 @@ button:disabled{
 
 <section id="admin">
 
-  <div class="container">
+  <div class="layout">
 
-    <div class="dashboard">
+    <!-- SIDEBAR -->
 
-      <aside class="sidebar">
+    <aside class="sidebar">
 
-        <button
-          class="nav-btn active"
-          onclick="showPanel('news',this)"
-        >
-          📰 ニュース
-        </button>
+      <button
+        class="side-button active"
+        onclick="showPanel('dashboard',this)"
+      >
+        🏠 ダッシュボード
+      </button>
 
-        <button
-          class="nav-btn"
-          onclick="showPanel('projects',this)"
-        >
-          🚀 プロジェクト
-        </button>
+      <button
+        class="side-button"
+        onclick="showPanel('news',this)"
+      >
+        📰 ニュース
+      </button>
 
-        <button
-          class="nav-btn"
-          onclick="showPanel('settings',this)"
-        >
-          ⚙️ サイト設定
-        </button>
+      <button
+        class="side-button"
+        onclick="showPanel('projects',this)"
+      >
+        🚀 プロジェクト
+      </button>
 
-        <button
-          class="nav-btn"
-          onclick="openReserve()"
-        >
-          📅 予約ページ
-        </button>
+      <button
+        class="side-button"
+        onclick="showPanel('settings',this)"
+      >
+        ⚙️ サイト設定
+      </button>
 
-        <button
-          class="nav-btn"
-          onclick="logout()"
-        >
-          🚪 ログアウト
-        </button>
+      <button
+        class="side-button"
+        onclick="openReserve()"
+      >
+        📅 予約ページ
+      </button>
 
-      </aside>
-
-
-      <main class="content">
-
-        <!-- NEWS -->
-
-        <section id="panel-news" class="panel active">
-
-          <div class="top-title">
-
-            <h1>ニュース管理</h1>
-
-            <p>
-              QUL公式サイトのニュースを管理します。
-            </p>
-
-          </div>
-
-          <div class="action-row">
-
-            <button onclick="openNewsModal()">
-              ＋ ニュースを追加
-            </button>
-
-            <button
-              class="btn-secondary"
-              onclick="loadNews()"
-            >
-              ↻ 更新
-            </button>
-
-          </div>
-
-          <div id="newsList">
-            読み込み中…
-          </div>
-
-        </section>
+    </aside>
 
 
-        <!-- PROJECTS -->
+    <!-- CONTENT -->
 
-        <section id="panel-projects" class="panel">
+    <main class="content">
 
-          <div class="top-title">
 
-            <h1>プロジェクト管理</h1>
+      <!-- DASHBOARD -->
 
-            <p>
-              QULのプロジェクト情報を管理します。
-            </p>
+      <section
+        id="panel-dashboard"
+        class="panel active"
+      >
 
-          </div>
+        <div class="page-title">
+
+          <h1>ダッシュボード</h1>
+
+          <p>
+            QUL公式サイトを管理します。
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h2>QUL Adminへようこそ</h2>
+
+          <p>
+            ニュース、プロジェクト、サイト情報を
+            ここから管理できます。
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h2>クイック操作</h2>
 
           <div class="action-row">
 
-            <button onclick="openProjectModal()">
-              ＋ プロジェクトを追加
+            <button
+              class="action-button"
+              onclick="showPanelByName('news')"
+            >
+              📰 ニュース管理
             </button>
 
             <button
-              class="btn-secondary"
-              onclick="loadProjects()"
+              class="action-button"
+              onclick="showPanelByName('projects')"
             >
-              ↻ 更新
+              🚀 プロジェクト管理
+            </button>
+
+            <button
+              class="action-button"
+              onclick="showPanelByName('settings')"
+            >
+              ⚙️ サイト設定
             </button>
 
           </div>
 
-          <div id="projectsList">
-            読み込み中…
-          </div>
+        </div>
 
-        </section>
+      </section>
 
 
-        <!-- SETTINGS -->
+      <!-- NEWS -->
 
-        <section id="panel-settings" class="panel">
+      <section
+        id="panel-news"
+        class="panel"
+      >
 
-          <div class="top-title">
+        <div class="page-title">
 
-            <h1>サイト設定</h1>
+          <h1>ニュース管理</h1>
 
-            <p>
-              QUL公式サイトの基本情報を管理します。
-            </p>
+          <p>
+            QUL公式サイトのニュースを管理します。
+          </p>
 
-          </div>
+        </div>
 
-          <div class="card">
+        <div class="action-row">
 
-            <label>サイト名</label>
+          <button
+            class="action-button"
+            onclick="newNews()"
+          >
+            ＋ ニュースを追加
+          </button>
 
-            <input id="setting_site_name">
+          <button
+            class="action-button gray-button"
+            onclick="loadNews()"
+          >
+            ↻ 更新
+          </button>
 
-            <label>サイト説明</label>
+        </div>
 
-            <textarea id="setting_site_description"></textarea>
+        <div id="newsList">
+          読み込み中…
+        </div>
 
-            <label>キャッチコピー</label>
+      </section>
 
-            <input id="setting_catchcopy">
 
-            <label>Vision</label>
+      <!-- PROJECTS -->
 
-            <textarea id="setting_vision"></textarea>
+      <section
+        id="panel-projects"
+        class="panel"
+      >
 
-            <button onclick="saveSettings()">
-              設定を保存
-            </button>
+        <div class="page-title">
 
-            <div id="settingsStatus"></div>
+          <h1>プロジェクト管理</h1>
 
-          </div>
+          <p>
+            QULのプロジェクトを管理します。
+          </p>
 
-        </section>
+        </div>
 
-      </main>
+        <div class="action-row">
 
-    </div>
+          <button
+            class="action-button"
+            onclick="newProject()"
+          >
+            ＋ プロジェクトを追加
+          </button>
+
+          <button
+            class="action-button gray-button"
+            onclick="loadProjects()"
+          >
+            ↻ 更新
+          </button>
+
+        </div>
+
+        <div id="projectsList">
+          読み込み中…
+        </div>
+
+      </section>
+
+
+      <!-- SETTINGS -->
+
+      <section
+        id="panel-settings"
+        class="panel"
+      >
+
+        <div class="page-title">
+
+          <h1>サイト設定</h1>
+
+          <p>
+            QUL公式サイトの基本情報を管理します。
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <label>サイト名</label>
+
+          <input
+            id="site_name"
+            class="field"
+          >
+
+          <label>サイト説明</label>
+
+          <textarea
+            id="site_description"
+            class="field"
+          ></textarea>
+
+          <label>キャッチコピー</label>
+
+          <input
+            id="catchcopy"
+            class="field"
+          >
+
+          <label>Vision</label>
+
+          <textarea
+            id="vision"
+            class="field"
+          ></textarea>
+
+          <button
+            class="action-button"
+            onclick="saveSettings()"
+          >
+            設定を保存
+          </button>
+
+          <div id="settingsStatus"></div>
+
+        </div>
+
+      </section>
+
+    </main>
 
   </div>
 
@@ -563,7 +728,10 @@ button:disabled{
      NEWS MODAL
 ========================= -->
 
-<div id="newsModal" class="modal">
+<div
+  id="newsModal"
+  class="modal"
+>
 
   <div class="modal-box">
 
@@ -578,17 +746,24 @@ button:disabled{
 
     <label>タイトル</label>
 
-    <input id="newsTitle">
+    <input
+      id="newsTitle"
+      class="field"
+    >
 
     <label>本文</label>
 
-    <textarea id="newsBody"></textarea>
+    <textarea
+      id="newsBody"
+      class="field"
+    ></textarea>
 
-    <div class="check">
+    <div class="checkbox">
 
       <input
-        type="checkbox"
         id="newsPublished"
+        type="checkbox"
+        checked
       >
 
       <span>公開する</span>
@@ -598,13 +773,16 @@ button:disabled{
     <div class="modal-actions">
 
       <button
-        class="btn-secondary"
+        class="gray-button"
         onclick="closeNewsModal()"
       >
         キャンセル
       </button>
 
-      <button onclick="saveNews()">
+      <button
+        class="action-button"
+        onclick="saveNews()"
+      >
         保存
       </button>
 
@@ -619,7 +797,10 @@ button:disabled{
      PROJECT MODAL
 ========================= -->
 
-<div id="projectModal" class="modal">
+<div
+  id="projectModal"
+  class="modal"
+>
 
   <div class="modal-box">
 
@@ -634,16 +815,23 @@ button:disabled{
 
     <label>プロジェクト名</label>
 
-    <input id="projectName">
+    <input
+      id="projectName"
+      class="field"
+    >
 
     <label>説明</label>
 
-    <textarea id="projectDescription"></textarea>
+    <textarea
+      id="projectDescription"
+      class="field"
+    ></textarea>
 
     <label>ステータス</label>
 
     <input
       id="projectStatus"
+      class="field"
       placeholder="開発中 / 提供予定 / 構想中"
     >
 
@@ -651,15 +839,16 @@ button:disabled{
 
     <input
       id="projectOrder"
+      class="field"
       type="number"
       value="0"
     >
 
-    <div class="check">
+    <div class="checkbox">
 
       <input
-        type="checkbox"
         id="projectVisible"
+        type="checkbox"
         checked
       >
 
@@ -670,13 +859,16 @@ button:disabled{
     <div class="modal-actions">
 
       <button
-        class="btn-secondary"
+        class="gray-button"
         onclick="closeProjectModal()"
       >
         キャンセル
       </button>
 
-      <button onclick="saveProject()">
+      <button
+        class="action-button"
+        onclick="saveProject()"
+      >
         保存
       </button>
 
@@ -687,91 +879,64 @@ button:disabled{
 </div>
 
 
+<!-- =========================
+     SUPABASE
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+/* =========================
+   CONFIG
+========================= */
 
 const SUPABASE_URL =
-  "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+"https://vfdqblzbdtxbuhjxzdoq.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+"sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
 
-let client = null;
+let supabaseClient = null;
 
 
-/* =====================================================
+/* =========================
    INIT
-===================================================== */
+========================= */
 
-window.addEventListener("DOMContentLoaded", async function(){
+document.getElementById("loginStatus").textContent =
+"JavaScript OK";
 
-  const status =
-    document.getElementById("status");
+try{
 
-  status.textContent =
-    "JavaScript OK\nSupabase初期化中…";
+  supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-  try{
+  document.getElementById("loginStatus").textContent =
+  "JavaScript OK\nSupabase OK\nログインできます。";
 
-    if(!window.supabase){
+}catch(error){
 
-      throw new Error(
-        "Supabaseライブラリを読み込めませんでした。"
-      );
+  console.error(error);
 
-    }
+  document.getElementById("loginStatus").textContent =
+  "Supabase初期化エラー\n\n" +
+  error.message;
 
-    client =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-    status.textContent =
-      "JavaScript OK\nSupabase OK";
-
-    const result =
-      await client.auth.getSession();
-
-    if(result.data.session){
-
-      await loginSuccess(
-        result.data.session.user
-      );
-
-    }else{
-
-      status.textContent =
-        "JavaScript OK\nSupabase OK\nログインできます。";
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    status.textContent =
-      "初期化エラー\n" +
-      error.message;
-
-  }
-
-});
+}
 
 
-/* =====================================================
+/* =========================
    LOGIN
-===================================================== */
+========================= */
 
-window.login = async function(){
+async function login(){
 
   const status =
-    document.getElementById("status");
+    document.getElementById("loginStatus");
 
   const button =
     document.getElementById("loginButton");
@@ -782,10 +947,10 @@ window.login = async function(){
   const password =
     document.getElementById("password").value;
 
-  if(!client){
+  if(!supabaseClient){
 
     status.textContent =
-      "Supabaseが初期化されていません。";
+    "Supabaseが初期化されていません。";
 
     return;
 
@@ -794,7 +959,7 @@ window.login = async function(){
   if(!email){
 
     status.textContent =
-      "メールアドレスを入力してください。";
+    "メールアドレスを入力してください。";
 
     return;
 
@@ -803,7 +968,7 @@ window.login = async function(){
   if(!password){
 
     status.textContent =
-      "パスワードを入力してください。";
+    "パスワードを入力してください。";
 
     return;
 
@@ -812,23 +977,21 @@ window.login = async function(){
   button.disabled = true;
 
   button.textContent =
-    "ログイン中…";
+  "ログイン中…";
 
   status.textContent =
-    "Supabaseへログインしています…";
+  "ログインしています…";
 
   try{
 
     const result =
-      await client.auth.signInWithPassword({
+      await supabaseClient.auth.signInWithPassword({
 
         email:email,
 
         password:password
 
       });
-
-    console.log("LOGIN RESULT",result);
 
     if(result.error){
 
@@ -845,9 +1008,9 @@ window.login = async function(){
     }
 
     status.textContent =
-      "ログイン成功！";
+    "ログイン成功！";
 
-    await loginSuccess(
+    showAdmin(
       result.data.user
     );
 
@@ -856,97 +1019,90 @@ window.login = async function(){
     console.error(error);
 
     status.textContent =
-      "ログイン失敗\n\n" +
-      error.message;
+    "ログイン失敗\n\n" +
+    error.message;
 
   }finally{
 
     button.disabled = false;
 
     button.textContent =
-      "ログイン";
+    "ログイン";
 
   }
 
-};
+}
 
 
-/* =====================================================
-   LOGIN SUCCESS
-===================================================== */
+/* =========================
+   ADMIN DISPLAY
+========================= */
 
-async function loginSuccess(user){
+function showAdmin(user){
 
   document.getElementById("login").style.display =
-    "none";
+  "none";
 
   document.getElementById("admin").style.display =
-    "block";
+  "block";
 
-  document.getElementById("headerUser").textContent =
-    user.email || "";
+  document.getElementById("headerEmail").textContent =
+  user.email || "";
 
   /*
-   * 管理者権限を確認
+   * 管理画面を先に表示。
+   * 権限確認やデータ読み込みで
+   * ログイン画面に戻ることはありません。
    */
+
+  loadNews();
+
+  loadProjects();
+
+  loadSettings();
+
+}
+
+
+/* =========================
+   SESSION
+========================= */
+
+(async function(){
+
+  if(!supabaseClient) return;
 
   try{
 
     const result =
-      await client
-        .from("profiles")
-        .select("role")
-        .eq("id",user.id)
-        .maybeSingle();
+      await supabaseClient.auth.getSession();
 
-    if(result.error){
-
-      console.warn(
-        "profiles確認エラー",
-        result.error
-      );
-
-    }else if(
+    if(
       result.data &&
-      result.data.role !== "admin"
+      result.data.session &&
+      result.data.session.user
     ){
 
-      alert(
-        "このアカウントには管理者権限がありません。"
+      showAdmin(
+        result.data.session.user
       );
-
-      await client.auth.signOut();
-
-      location.reload();
-
-      return;
 
     }
 
   }catch(error){
 
-    console.warn(error);
+    console.error(error);
 
   }
 
-  /*
-   * データ読み込み
-   */
-
-  await loadNews();
-
-  await loadProjects();
-
-  await loadSettings();
-
-}
+})();
 
 
-/* =====================================================
+/* =========================
    PANEL
-===================================================== */
+========================= */
 
-window.showPanel = function(name,button){
+function showPanel(name,button){
 
   document
     .querySelectorAll(".panel")
@@ -961,37 +1117,79 @@ window.showPanel = function(name,button){
     .classList.add("active");
 
   document
-    .querySelectorAll(".nav-btn")
+    .querySelectorAll(".side-button")
     .forEach(function(btn){
 
       btn.classList.remove("active");
 
     });
 
-  button.classList.add("active");
+  if(button){
 
-};
+    button.classList.add("active");
+
+  }
+
+}
 
 
-/* =====================================================
+function showPanelByName(name){
+
+  const buttons =
+    document.querySelectorAll(".side-button");
+
+  let target = null;
+
+  buttons.forEach(function(button){
+
+    if(
+      button.textContent.includes(
+        name === "news"
+          ? "ニュース"
+          : name === "projects"
+          ? "プロジェクト"
+          : "サイト設定"
+      )
+    ){
+
+      target = button;
+
+    }
+
+  });
+
+  showPanel(
+    name,
+    target
+  );
+
+}
+
+
+/* =========================
    NEWS
-===================================================== */
+========================= */
 
 async function loadNews(){
 
   const list =
     document.getElementById("newsList");
 
+  if(!list) return;
+
   list.textContent =
-    "読み込み中…";
+  "読み込み中…";
 
   try{
 
     const result =
-      await client
+      await supabaseClient
         .from("news")
         .select("*")
-        .order("created_at",{ascending:false});
+        .order(
+          "created_at",
+          {ascending:false}
+        );
 
     if(result.error){
 
@@ -1002,10 +1200,10 @@ async function loadNews(){
     const rows =
       result.data || [];
 
-    if(!rows.length){
+    if(rows.length === 0){
 
       list.innerHTML =
-        '<div class="empty">ニュースはまだありません。</div>';
+      '<div class="empty">ニュースはまだありません。</div>';
 
       return;
 
@@ -1014,43 +1212,56 @@ async function loadNews(){
     list.innerHTML =
       rows.map(function(row){
 
+        const safeRow =
+          encodeURIComponent(
+            JSON.stringify(row)
+          );
+
         return `
+
           <div class="item">
 
             <div class="item-title">
               ${escapeHTML(row.title || "無題")}
             </div>
 
-            <div class="item-meta">
+            <div class="meta">
 
               <span class="badge">
-                ${row.is_published ? "公開" : "非公開"}
+                ${
+                  row.is_published
+                  ? "公開"
+                  : "非公開"
+                }
               </span>
 
-              ${row.published_at
+              ${
+                row.created_at
                 ? escapeHTML(
-                    new Date(row.published_at)
-                    .toLocaleString("ja-JP")
+                    new Date(
+                      row.created_at
+                    ).toLocaleString("ja-JP")
                   )
-                : ""}
+                : ""
+              }
 
             </div>
 
-            <div class="item-body">
+            <div class="item-description">
               ${escapeHTML(row.body || "")}
             </div>
 
             <div class="action-row">
 
               <button
-                class="btn-small"
-                onclick='editNews(${JSON.stringify(row).replace(/'/g,"&#39;")})'
+                class="action-button"
+                onclick="editNewsEncoded('${safeRow}')"
               >
                 編集
               </button>
 
               <button
-                class="btn-small btn-danger"
+                class="action-button danger-button"
                 onclick="deleteNews('${row.id}')"
               >
                 削除
@@ -1059,6 +1270,7 @@ async function loadNews(){
             </div>
 
           </div>
+
         `;
 
       }).join("");
@@ -1068,70 +1280,85 @@ async function loadNews(){
     console.error(error);
 
     list.innerHTML =
-      '<div class="empty">読み込みエラー：' +
-      escapeHTML(error.message) +
-      '</div>';
+    '<div class="empty">読み込みエラー：' +
+    escapeHTML(error.message) +
+    '</div>';
 
   }
 
 }
 
 
-window.openNewsModal = function(){
+function newNews(){
 
   document.getElementById("newsModalTitle").textContent =
-    "ニュースを追加";
+  "ニュースを追加";
 
   document.getElementById("newsId").value =
-    "";
+  "";
 
   document.getElementById("newsTitle").value =
-    "";
+  "";
 
   document.getElementById("newsBody").value =
-    "";
+  "";
 
   document.getElementById("newsPublished").checked =
-    true;
+  true;
 
   document.getElementById("newsModal")
-    .classList.add("show");
+    .classList.add("open");
 
-};
+}
 
 
-window.editNews = function(row){
+function editNewsEncoded(encoded){
 
-  document.getElementById("newsModalTitle").textContent =
+  try{
+
+    const row =
+      JSON.parse(
+        decodeURIComponent(encoded)
+      );
+
+    document.getElementById("newsModalTitle").textContent =
     "ニュースを編集";
 
-  document.getElementById("newsId").value =
+    document.getElementById("newsId").value =
     row.id || "";
 
-  document.getElementById("newsTitle").value =
+    document.getElementById("newsTitle").value =
     row.title || "";
 
-  document.getElementById("newsBody").value =
+    document.getElementById("newsBody").value =
     row.body || "";
 
-  document.getElementById("newsPublished").checked =
+    document.getElementById("newsPublished").checked =
     !!row.is_published;
 
+    document.getElementById("newsModal")
+      .classList.add("open");
+
+  }catch(error){
+
+    alert(
+      "ニュース情報を開けませんでした。"
+    );
+
+  }
+
+}
+
+
+function closeNewsModal(){
+
   document.getElementById("newsModal")
-    .classList.add("show");
+    .classList.remove("open");
 
-};
-
-
-window.closeNewsModal = function(){
-
-  document.getElementById("newsModal")
-    .classList.remove("show");
-
-};
+}
 
 
-window.saveNews = async function(){
+async function saveNews(){
 
   const id =
     document.getElementById("newsId").value;
@@ -1147,7 +1374,9 @@ window.saveNews = async function(){
 
   if(!title){
 
-    alert("タイトルを入力してください。");
+    alert(
+      "タイトルを入力してください。"
+    );
 
     return;
 
@@ -1165,8 +1394,8 @@ window.saveNews = async function(){
 
       published_at:
         published
-          ? new Date().toISOString()
-          : null
+        ? new Date().toISOString()
+        : null
 
     };
 
@@ -1175,171 +1404,4 @@ window.saveNews = async function(){
     if(id){
 
       result =
-        await client
-          .from("news")
-          .update(data)
-          .eq("id",id);
-
-    }else{
-
-      result =
-        await client
-          .from("news")
-          .insert(data);
-
-    }
-
-    if(result.error){
-
-      throw result.error;
-
-    }
-
-    closeNewsModal();
-
-    await loadNews();
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "保存に失敗しました。\n\n" +
-      error.message
-    );
-
-  }
-
-};
-
-
-window.deleteNews = async function(id){
-
-  if(!confirm(
-    "このニュースを削除しますか？"
-  )) return;
-
-  try{
-
-    const result =
-      await client
-        .from("news")
-        .delete()
-        .eq("id",id);
-
-    if(result.error){
-
-      throw result.error;
-
-    }
-
-    await loadNews();
-
-  }catch(error){
-
-    alert(
-      "削除に失敗しました。\n\n" +
-      error.message
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   PROJECTS
-===================================================== */
-
-async function loadProjects(){
-
-  const list =
-    document.getElementById("projectsList");
-
-  list.textContent =
-    "読み込み中…";
-
-  try{
-
-    const result =
-      await client
-        .from("projects")
-        .select("*")
-        .order("sort_order",{ascending:true});
-
-    if(result.error){
-
-      throw result.error;
-
-    }
-
-    const rows =
-      result.data || [];
-
-    if(!rows.length){
-
-      list.innerHTML =
-        '<div class="empty">プロジェクトはありません。</div>';
-
-      return;
-
-    }
-
-    list.innerHTML =
-      rows.map(function(row){
-
-        return `
-
-          <div class="item">
-
-            <div class="item-title">
-              ${escapeHTML(row.name || "無題")}
-            </div>
-
-            <div class="item-meta">
-
-              <span class="badge">
-                ${escapeHTML(row.status || "")}
-              </span>
-
-              <span class="badge">
-                ${row.is_visible ? "表示" : "非表示"}
-              </span>
-
-              順番：${row.sort_order ?? 0}
-
-            </div>
-
-            <div class="item-body">
-              ${escapeHTML(row.description || "")}
-            </div>
-
-            <div class="action-row">
-
-              <button
-                class="btn-small"
-                onclick='editProject(${JSON.stringify(row).replace(/'/g,"&#39;")})'
-              >
-                編集
-              </button>
-
-              <button
-                class="btn-small btn-danger"
-                onclick="deleteProject('${row.id}')"
-              >
-                削除
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
-      }).join("");
-
-  }catch(error){
-
-    console.error(error);
-
-    list.innerH
+        awai
