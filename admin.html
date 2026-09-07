@@ -6,9 +6,7 @@
 <title>QUL Admin</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -18,83 +16,308 @@ body{
 }
 
 header{
+  height:64px;
   background:#809CCF;
-  color:white;
-  padding:20px;
-  font-size:22px;
-  font-weight:700;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
-main{
-  max-width:500px;
-  margin:60px auto;
-  padding:20px;
+.logo{
+  font-size:21px;
+  font-weight:800;
+}
+
+.header-user{
+  font-size:13px;
+  opacity:.9;
+}
+
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:30px 18px 60px;
+}
+
+/* LOGIN */
+
+.login-wrap{
+  max-width:460px;
+  margin:70px auto;
 }
 
 .card{
-  background:white;
-  padding:25px;
+  background:#fff;
   border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  padding:25px;
+  box-shadow:0 8px 30px rgba(0,0,0,.07);
 }
 
-h1{
+.card h1,
+.card h2{
   margin-top:0;
 }
 
-input{
+input,
+textarea,
+select{
   width:100%;
-  padding:15px;
-  margin:8px 0;
+  padding:13px;
+  margin-top:7px;
+  margin-bottom:14px;
   border:1px solid #ddd;
-  border-radius:12px;
-  font-size:16px;
+  border-radius:11px;
+  font-size:15px;
+  font-family:inherit;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
 }
 
 button{
-  width:100%;
-  padding:15px;
-  margin-top:15px;
   border:0;
-  border-radius:12px;
-  background:#809CCF;
-  color:white;
-  font-size:16px;
+  border-radius:11px;
+  padding:12px 16px;
+  font-size:14px;
   font-weight:700;
   cursor:pointer;
+  background:#809CCF;
+  color:#fff;
 }
 
-button:active{
-  transform:scale(.98);
+button:hover{
+  opacity:.9;
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.btn-secondary{
+  background:#eef1f6;
+  color:#222;
+}
+
+.btn-danger{
+  background:#222;
+}
+
+.btn-small{
+  padding:8px 11px;
+  font-size:12px;
 }
 
 #status{
   margin-top:15px;
   padding:12px;
-  border-radius:10px;
-  background:#f1f3f6;
+  border-radius:11px;
+  background:#f3f5f8;
   white-space:pre-wrap;
+  font-size:13px;
 }
+
+/* ADMIN */
 
 #admin{
   display:none;
 }
 
-.menu{
+.dashboard{
   display:grid;
-  gap:12px;
+  grid-template-columns:220px 1fr;
+  gap:20px;
 }
 
-.menu button{
-  background:white;
-  color:#111;
-  border:1px solid #ddd;
+.sidebar{
+  background:#fff;
+  border-radius:18px;
+  padding:12px;
+  height:max-content;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.nav-btn{
+  width:100%;
   text-align:left;
+  background:transparent;
+  color:#222;
+  margin-bottom:6px;
 }
 
-.logout{
-  background:#222!important;
-  color:white!important;
+.nav-btn.active{
+  background:#809CCF;
+  color:#fff;
+}
+
+.content{
+  min-width:0;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.top-title{
+  margin-bottom:20px;
+}
+
+.top-title h1{
+  margin:0 0 5px;
+  font-size:28px;
+}
+
+.top-title p{
+  margin:0;
+  color:#666;
+}
+
+.action-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.item{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:12px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.item-title{
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.item-meta{
+  font-size:12px;
+  color:#777;
+  margin-bottom:8px;
+}
+
+.item-body{
+  color:#555;
+  white-space:pre-wrap;
+  margin-bottom:12px;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#edf1f8;
+  font-size:11px;
+  margin-right:5px;
+}
+
+.empty{
+  background:#fff;
+  padding:30px;
+  border-radius:16px;
+  text-align:center;
+  color:#777;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:#fff;
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:20px;
+  padding:24px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:15px;
+}
+
+.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0;
+}
+
+.check input{
+  width:auto;
+  margin:0;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+
+  header{
+    height:auto;
+    min-height:60px;
+    padding:14px;
+  }
+
+  .header-user{
+    display:none;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+  }
+
+  .nav-btn{
+    min-width:max-content;
+    width:auto;
+    margin:0;
+  }
+
+  .top-title h1{
+    font-size:23px;
+  }
+
 }
 </style>
 </head>
@@ -102,37 +325,50 @@ button:active{
 <body>
 
 <header>
-  QUL Admin
+  <div class="logo">QUL Admin</div>
+  <div class="header-user" id="headerUser"></div>
 </header>
 
-<main>
 
-  <!-- LOGIN -->
-  <section id="login">
+<!-- =========================
+     LOGIN
+========================= -->
+
+<section id="login">
+
+  <div class="login-wrap">
+
     <div class="card">
 
-      <h1>管理画面ログイン</h1>
+      <h1>QUL管理画面</h1>
 
-      <p>QUL管理者アカウントでログインしてください。</p>
+      <p>
+        QUL管理者アカウントでログインしてください。
+      </p>
+
+      <label>メールアドレス</label>
 
       <input
         id="email"
         type="email"
-        placeholder="メールアドレス"
         autocomplete="email"
+        placeholder="メールアドレス"
       >
+
+      <label>パスワード</label>
 
       <input
         id="password"
         type="password"
-        placeholder="パスワード"
         autocomplete="current-password"
+        placeholder="パスワード"
       >
 
       <button
         id="loginButton"
         type="button"
         onclick="login()"
+        style="width:100%"
       >
         ログイン
       </button>
@@ -142,57 +378,322 @@ button:active{
       </div>
 
     </div>
-  </section>
+
+  </div>
+
+</section>
 
 
-  <!-- ADMIN -->
-  <section id="admin">
+<!-- =========================
+     ADMIN
+========================= -->
 
-    <div class="card">
+<section id="admin">
 
-      <h1>QUL管理画面</h1>
+  <div class="container">
 
-      <p id="userInfo"></p>
+    <div class="dashboard">
 
-      <div class="menu">
+      <aside class="sidebar">
 
-        <button onclick="alert('ニュース管理は次の段階で追加します')">
-          📰 ニュース管理
+        <button
+          class="nav-btn active"
+          onclick="showPanel('news',this)"
+        >
+          📰 ニュース
         </button>
 
-        <button onclick="alert('プロジェクト管理は次の段階で追加します')">
-          🚀 プロジェクト管理
+        <button
+          class="nav-btn"
+          onclick="showPanel('projects',this)"
+        >
+          🚀 プロジェクト
         </button>
 
-        <button onclick="alert('サイト設定は次の段階で追加します')">
+        <button
+          class="nav-btn"
+          onclick="showPanel('settings',this)"
+        >
           ⚙️ サイト設定
         </button>
 
-        <button onclick="window.open('https://nandemostorenet.stores.jp/reserve/QUL-Group_reserve','_blank')">
+        <button
+          class="nav-btn"
+          onclick="openReserve()"
+        >
           📅 予約ページ
         </button>
 
         <button
-          class="logout"
+          class="nav-btn"
           onclick="logout()"
         >
-          ログアウト
+          🚪 ログアウト
         </button>
 
-      </div>
+      </aside>
+
+
+      <main class="content">
+
+        <!-- NEWS -->
+
+        <section id="panel-news" class="panel active">
+
+          <div class="top-title">
+
+            <h1>ニュース管理</h1>
+
+            <p>
+              QUL公式サイトのニュースを管理します。
+            </p>
+
+          </div>
+
+          <div class="action-row">
+
+            <button onclick="openNewsModal()">
+              ＋ ニュースを追加
+            </button>
+
+            <button
+              class="btn-secondary"
+              onclick="loadNews()"
+            >
+              ↻ 更新
+            </button>
+
+          </div>
+
+          <div id="newsList">
+            読み込み中…
+          </div>
+
+        </section>
+
+
+        <!-- PROJECTS -->
+
+        <section id="panel-projects" class="panel">
+
+          <div class="top-title">
+
+            <h1>プロジェクト管理</h1>
+
+            <p>
+              QULのプロジェクト情報を管理します。
+            </p>
+
+          </div>
+
+          <div class="action-row">
+
+            <button onclick="openProjectModal()">
+              ＋ プロジェクトを追加
+            </button>
+
+            <button
+              class="btn-secondary"
+              onclick="loadProjects()"
+            >
+              ↻ 更新
+            </button>
+
+          </div>
+
+          <div id="projectsList">
+            読み込み中…
+          </div>
+
+        </section>
+
+
+        <!-- SETTINGS -->
+
+        <section id="panel-settings" class="panel">
+
+          <div class="top-title">
+
+            <h1>サイト設定</h1>
+
+            <p>
+              QUL公式サイトの基本情報を管理します。
+            </p>
+
+          </div>
+
+          <div class="card">
+
+            <label>サイト名</label>
+
+            <input id="setting_site_name">
+
+            <label>サイト説明</label>
+
+            <textarea id="setting_site_description"></textarea>
+
+            <label>キャッチコピー</label>
+
+            <input id="setting_catchcopy">
+
+            <label>Vision</label>
+
+            <textarea id="setting_vision"></textarea>
+
+            <button onclick="saveSettings()">
+              設定を保存
+            </button>
+
+            <div id="settingsStatus"></div>
+
+          </div>
+
+        </section>
+
+      </main>
 
     </div>
 
-  </section>
+  </div>
 
-</main>
+</section>
+
+
+<!-- =========================
+     NEWS MODAL
+========================= -->
+
+<div id="newsModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2 id="newsModalTitle">
+      ニュースを追加
+    </h2>
+
+    <input
+      type="hidden"
+      id="newsId"
+    >
+
+    <label>タイトル</label>
+
+    <input id="newsTitle">
+
+    <label>本文</label>
+
+    <textarea id="newsBody"></textarea>
+
+    <div class="check">
+
+      <input
+        type="checkbox"
+        id="newsPublished"
+      >
+
+      <span>公開する</span>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-secondary"
+        onclick="closeNewsModal()"
+      >
+        キャンセル
+      </button>
+
+      <button onclick="saveNews()">
+        保存
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     PROJECT MODAL
+========================= -->
+
+<div id="projectModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2 id="projectModalTitle">
+      プロジェクトを追加
+    </h2>
+
+    <input
+      type="hidden"
+      id="projectId"
+    >
+
+    <label>プロジェクト名</label>
+
+    <input id="projectName">
+
+    <label>説明</label>
+
+    <textarea id="projectDescription"></textarea>
+
+    <label>ステータス</label>
+
+    <input
+      id="projectStatus"
+      placeholder="開発中 / 提供予定 / 構想中"
+    >
+
+    <label>並び順</label>
+
+    <input
+      id="projectOrder"
+      type="number"
+      value="0"
+    >
+
+    <div class="check">
+
+      <input
+        type="checkbox"
+        id="projectVisible"
+        checked
+      >
+
+      <span>サイトに表示する</span>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-secondary"
+        onclick="closeProjectModal()"
+      >
+        キャンセル
+      </button>
+
+      <button onclick="saveProject()">
+        保存
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-console.log("QUL ADMIN JavaScript START");
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
   "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
@@ -203,11 +704,11 @@ const SUPABASE_KEY =
 let client = null;
 
 
-/* -------------------------
-   初期化
-------------------------- */
+/* =====================================================
+   INIT
+===================================================== */
 
-window.addEventListener("DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded", async function(){
 
   const status =
     document.getElementById("status");
@@ -219,10 +720,10 @@ window.addEventListener("DOMContentLoaded", function(){
 
     if(!window.supabase){
 
-      status.textContent =
-        "エラー：Supabaseライブラリを読み込めませんでした。";
+      throw new Error(
+        "Supabaseライブラリを読み込めませんでした。"
+      );
 
-      return;
     }
 
     client =
@@ -232,9 +733,23 @@ window.addEventListener("DOMContentLoaded", function(){
       );
 
     status.textContent =
-      "JavaScript OK\nSupabase OK\nログインできます。";
+      "JavaScript OK\nSupabase OK";
 
-    console.log("Supabase initialized");
+    const result =
+      await client.auth.getSession();
+
+    if(result.data.session){
+
+      await loginSuccess(
+        result.data.session.user
+      );
+
+    }else{
+
+      status.textContent =
+        "JavaScript OK\nSupabase OK\nログインできます。";
+
+    }
 
   }catch(error){
 
@@ -249,13 +764,11 @@ window.addEventListener("DOMContentLoaded", function(){
 });
 
 
-/* -------------------------
-   ログイン
-------------------------- */
+/* =====================================================
+   LOGIN
+===================================================== */
 
 window.login = async function(){
-
-  console.log("LOGIN BUTTON CLICK");
 
   const status =
     document.getElementById("status");
@@ -275,6 +788,7 @@ window.login = async function(){
       "Supabaseが初期化されていません。";
 
     return;
+
   }
 
   if(!email){
@@ -283,6 +797,7 @@ window.login = async function(){
       "メールアドレスを入力してください。";
 
     return;
+
   }
 
   if(!password){
@@ -291,6 +806,7 @@ window.login = async function(){
       "パスワードを入力してください。";
 
     return;
+
   }
 
   button.disabled = true;
@@ -305,8 +821,11 @@ window.login = async function(){
 
     const result =
       await client.auth.signInWithPassword({
+
         email:email,
+
         password:password
+
       });
 
     console.log("LOGIN RESULT",result);
@@ -326,9 +845,11 @@ window.login = async function(){
     }
 
     status.textContent =
-      "ログイン成功！\n管理画面を表示します。";
+      "ログイン成功！";
 
-    showAdmin(result.data.user);
+    await loginSuccess(
+      result.data.user
+    );
 
   }catch(error){
 
@@ -350,11 +871,11 @@ window.login = async function(){
 };
 
 
-/* -------------------------
-   管理画面表示
-------------------------- */
+/* =====================================================
+   LOGIN SUCCESS
+===================================================== */
 
-function showAdmin(user){
+async function loginSuccess(user){
 
   document.getElementById("login").style.display =
     "none";
@@ -362,62 +883,463 @@ function showAdmin(user){
   document.getElementById("admin").style.display =
     "block";
 
-  document.getElementById("userInfo").textContent =
-    "ログイン中：" + user.email;
+  document.getElementById("headerUser").textContent =
+    user.email || "";
+
+  /*
+   * 管理者権限を確認
+   */
+
+  try{
+
+    const result =
+      await client
+        .from("profiles")
+        .select("role")
+        .eq("id",user.id)
+        .maybeSingle();
+
+    if(result.error){
+
+      console.warn(
+        "profiles確認エラー",
+        result.error
+      );
+
+    }else if(
+      result.data &&
+      result.data.role !== "admin"
+    ){
+
+      alert(
+        "このアカウントには管理者権限がありません。"
+      );
+
+      await client.auth.signOut();
+
+      location.reload();
+
+      return;
+
+    }
+
+  }catch(error){
+
+    console.warn(error);
+
+  }
+
+  /*
+   * データ読み込み
+   */
+
+  await loadNews();
+
+  await loadProjects();
+
+  await loadSettings();
 
 }
 
 
-/* -------------------------
-   ログアウト
-------------------------- */
+/* =====================================================
+   PANEL
+===================================================== */
 
-window.logout = async function(){
+window.showPanel = function(name,button){
+
+  document
+    .querySelectorAll(".panel")
+    .forEach(function(panel){
+
+      panel.classList.remove("active");
+
+    });
+
+  document
+    .getElementById("panel-" + name)
+    .classList.add("active");
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(function(btn){
+
+      btn.classList.remove("active");
+
+    });
+
+  button.classList.add("active");
+
+};
+
+
+/* =====================================================
+   NEWS
+===================================================== */
+
+async function loadNews(){
+
+  const list =
+    document.getElementById("newsList");
+
+  list.textContent =
+    "読み込み中…";
 
   try{
 
-    await client.auth.signOut();
+    const result =
+      await client
+        .from("news")
+        .select("*")
+        .order("created_at",{ascending:false});
+
+    if(result.error){
+
+      throw result.error;
+
+    }
+
+    const rows =
+      result.data || [];
+
+    if(!rows.length){
+
+      list.innerHTML =
+        '<div class="empty">ニュースはまだありません。</div>';
+
+      return;
+
+    }
+
+    list.innerHTML =
+      rows.map(function(row){
+
+        return `
+          <div class="item">
+
+            <div class="item-title">
+              ${escapeHTML(row.title || "無題")}
+            </div>
+
+            <div class="item-meta">
+
+              <span class="badge">
+                ${row.is_published ? "公開" : "非公開"}
+              </span>
+
+              ${row.published_at
+                ? escapeHTML(
+                    new Date(row.published_at)
+                    .toLocaleString("ja-JP")
+                  )
+                : ""}
+
+            </div>
+
+            <div class="item-body">
+              ${escapeHTML(row.body || "")}
+            </div>
+
+            <div class="action-row">
+
+              <button
+                class="btn-small"
+                onclick='editNews(${JSON.stringify(row).replace(/'/g,"&#39;")})'
+              >
+                編集
+              </button>
+
+              <button
+                class="btn-small btn-danger"
+                onclick="deleteNews('${row.id}')"
+              >
+                削除
+              </button>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
 
   }catch(error){
 
     console.error(error);
 
+    list.innerHTML =
+      '<div class="empty">読み込みエラー：' +
+      escapeHTML(error.message) +
+      '</div>';
+
   }
 
-  document.getElementById("admin").style.display =
-    "none";
+}
 
-  document.getElementById("login").style.display =
-    "block";
 
-  document.getElementById("status").textContent =
-    "ログアウトしました。";
+window.openNewsModal = function(){
+
+  document.getElementById("newsModalTitle").textContent =
+    "ニュースを追加";
+
+  document.getElementById("newsId").value =
+    "";
+
+  document.getElementById("newsTitle").value =
+    "";
+
+  document.getElementById("newsBody").value =
+    "";
+
+  document.getElementById("newsPublished").checked =
+    true;
+
+  document.getElementById("newsModal")
+    .classList.add("show");
 
 };
 
 
-/* -------------------------
-   JSエラー表示
-------------------------- */
+window.editNews = function(row){
 
-window.addEventListener("error",function(event){
+  document.getElementById("newsModalTitle").textContent =
+    "ニュースを編集";
 
-  console.error(event.error);
+  document.getElementById("newsId").value =
+    row.id || "";
 
-  const status =
-    document.getElementById("status");
+  document.getElementById("newsTitle").value =
+    row.title || "";
 
-  if(status){
+  document.getElementById("newsBody").value =
+    row.body || "";
 
-    status.textContent =
-      "JavaScriptエラー\n\n" +
-      event.message;
+  document.getElementById("newsPublished").checked =
+    !!row.is_published;
+
+  document.getElementById("newsModal")
+    .classList.add("show");
+
+};
+
+
+window.closeNewsModal = function(){
+
+  document.getElementById("newsModal")
+    .classList.remove("show");
+
+};
+
+
+window.saveNews = async function(){
+
+  const id =
+    document.getElementById("newsId").value;
+
+  const title =
+    document.getElementById("newsTitle").value.trim();
+
+  const body =
+    document.getElementById("newsBody").value;
+
+  const published =
+    document.getElementById("newsPublished").checked;
+
+  if(!title){
+
+    alert("タイトルを入力してください。");
+
+    return;
 
   }
 
-});
+  try{
 
-</script>
+    const data = {
 
-</body>
-</html>
+      title:title,
+
+      body:body,
+
+      is_published:published,
+
+      published_at:
+        published
+          ? new Date().toISOString()
+          : null
+
+    };
+
+    let result;
+
+    if(id){
+
+      result =
+        await client
+          .from("news")
+          .update(data)
+          .eq("id",id);
+
+    }else{
+
+      result =
+        await client
+          .from("news")
+          .insert(data);
+
+    }
+
+    if(result.error){
+
+      throw result.error;
+
+    }
+
+    closeNewsModal();
+
+    await loadNews();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "保存に失敗しました。\n\n" +
+      error.message
+    );
+
+  }
+
+};
+
+
+window.deleteNews = async function(id){
+
+  if(!confirm(
+    "このニュースを削除しますか？"
+  )) return;
+
+  try{
+
+    const result =
+      await client
+        .from("news")
+        .delete()
+        .eq("id",id);
+
+    if(result.error){
+
+      throw result.error;
+
+    }
+
+    await loadNews();
+
+  }catch(error){
+
+    alert(
+      "削除に失敗しました。\n\n" +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =====================================================
+   PROJECTS
+===================================================== */
+
+async function loadProjects(){
+
+  const list =
+    document.getElementById("projectsList");
+
+  list.textContent =
+    "読み込み中…";
+
+  try{
+
+    const result =
+      await client
+        .from("projects")
+        .select("*")
+        .order("sort_order",{ascending:true});
+
+    if(result.error){
+
+      throw result.error;
+
+    }
+
+    const rows =
+      result.data || [];
+
+    if(!rows.length){
+
+      list.innerHTML =
+        '<div class="empty">プロジェクトはありません。</div>';
+
+      return;
+
+    }
+
+    list.innerHTML =
+      rows.map(function(row){
+
+        return `
+
+          <div class="item">
+
+            <div class="item-title">
+              ${escapeHTML(row.name || "無題")}
+            </div>
+
+            <div class="item-meta">
+
+              <span class="badge">
+                ${escapeHTML(row.status || "")}
+              </span>
+
+              <span class="badge">
+                ${row.is_visible ? "表示" : "非表示"}
+              </span>
+
+              順番：${row.sort_order ?? 0}
+
+            </div>
+
+            <div class="item-body">
+              ${escapeHTML(row.description || "")}
+            </div>
+
+            <div class="action-row">
+
+              <button
+                class="btn-small"
+                onclick='editProject(${JSON.stringify(row).replace(/'/g,"&#39;")})'
+              >
+                編集
+              </button>
+
+              <button
+                class="btn-small btn-danger"
+                onclick="deleteProject('${row.id}')"
+              >
+                削除
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerH
