@@ -3,840 +3,260 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QUL Admin</title>
+
+<title>QUL Admin Login</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
-  background:#f5f7fb;
-  color:#202124;
-}
-
-.hidden{display:none!important}
-
-button,input,textarea,select{font:inherit}
-
-button{cursor:pointer}
-
-#loginScreen{
   min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
-  padding:20px;
+  justify-content:center;
+  background:#f5f7fb;
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
 }
 
-.login-card{
-  width:100%;
-  max-width:420px;
-  background:#fff;
+.card{
+  width:calc(100% - 40px);
+  max-width:400px;
+  background:white;
   padding:32px;
   border-radius:24px;
   box-shadow:0 20px 60px rgba(0,0,0,.08);
 }
 
 .logo{
-  width:58px;
-  height:58px;
-  border-radius:18px;
+  width:56px;
+  height:56px;
+  border-radius:17px;
   background:#809CCF;
   color:white;
   display:flex;
-  justify-content:center;
   align-items:center;
-  font-size:25px;
+  justify-content:center;
+  font-size:24px;
   font-weight:800;
   margin-bottom:20px;
 }
 
 h1{
   margin:0 0 8px;
+  font-size:26px;
 }
 
-.sub{
+p{
   color:#6b7280;
   font-size:14px;
-  margin-bottom:28px;
 }
 
-.field{
-  margin-bottom:16px;
-}
-
-label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:7px;
-}
-
-input,textarea,select{
+input{
   width:100%;
-  padding:12px 14px;
-  border:1px solid #e5e7eb;
+  padding:13px;
+  margin-top:7px;
+  margin-bottom:15px;
+  border:1px solid #ddd;
   border-radius:12px;
-  outline:none;
-  background:white;
+  font-size:16px;
 }
 
-input:focus,textarea:focus,select:focus{
-  border-color:#809CCF;
-  box-shadow:0 0 0 3px rgba(128,156,207,.15);
-}
-
-.login-button{
+button{
   width:100%;
+  padding:13px;
   border:0;
   border-radius:12px;
-  padding:13px;
   background:#809CCF;
   color:white;
   font-weight:700;
+  font-size:15px;
 }
 
-.login-button:disabled{
-  opacity:.6;
+button:disabled{
+  opacity:.5;
 }
 
-#loginStatus{
+#status{
   margin-top:15px;
-  padding:11px;
+  padding:12px;
   border-radius:10px;
   background:#f1f5f9;
-  color:#475569;
   font-size:13px;
   white-space:pre-wrap;
 }
 
-#loginError{
+#error{
   margin-top:15px;
   padding:12px;
   border-radius:10px;
   background:#fff0f1;
   color:#dc3545;
   font-size:13px;
-  line-height:1.6;
   white-space:pre-wrap;
 }
 
-#loginSuccess{
-  margin-top:15px;
-  padding:12px;
-  border-radius:10px;
-  background:#e9f7ef;
-  color:#198754;
-  font-size:13px;
-  white-space:pre-wrap;
-}
-
-/* ADMIN */
-
-#adminScreen{
-  min-height:100vh;
-}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid #e5e7eb;
-}
-
-.header-inner{
-  max-width:1200px;
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.brand-logo{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:#809CCF;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:800;
-}
-
-.brand small{
-  display:block;
-  color:#6b7280;
-  font-size:10px;
-}
-
-.logout{
-  border:1px solid #e5e7eb;
-  background:white;
-  border-radius:10px;
-  padding:8px 12px;
-}
-
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:28px 20px 60px;
-}
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:20px;
-  overflow:auto;
-}
-
-.tab{
-  border:0;
-  padding:11px 17px;
-  border-radius:12px;
-  background:white;
-  color:#6b7280;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-.tab.active{
-  background:#809CCF;
-  color:white;
-}
-
-.panel{
-  background:white;
-  border-radius:20px;
-  padding:22px;
-  box-shadow:0 8px 30px rgba(0,0,0,.04);
-}
-
-.panel-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.panel-head h2{
-  margin:0;
-  font-size:19px;
-}
-
-.primary{
-  border:0;
-  background:#809CCF;
-  color:white;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:700;
-}
-
-.item{
-  border:1px solid #e5e7eb;
-  border-radius:15px;
-  padding:16px;
-  margin-bottom:12px;
-}
-
-.item h3{
-  margin:0 0 7px;
-}
-
-.item p{
-  margin:0;
-  color:#6b7280;
-  white-space:pre-wrap;
-}
-
-.actions{
-  margin-top:12px;
-  display:flex;
-  gap:8px;
-}
-
-.edit{
-  border:0;
-  background:#eef3fb;
-  color:#5274af;
-  border-radius:9px;
-  padding:8px 12px;
-}
-
-.delete{
-  border:0;
-  background:#fff0f1;
-  color:#dc3545;
-  border-radius:9px;
-  padding:8px 12px;
-}
-
-.empty{
+#admin{
   text-align:center;
-  padding:35px;
-  color:#6b7280;
 }
 
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(0,0,0,.4);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal-box{
-  width:100%;
-  max-width:600px;
-  max-height:90vh;
-  overflow:auto;
-  background:white;
-  border-radius:20px;
-  padding:24px;
-}
-
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.close{
-  border:0;
-  background:#f1f2f4;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-}
-
-.modal-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:8px;
-  margin-top:20px;
-}
-
-.secondary{
-  border:1px solid #e5e7eb;
-  background:white;
-  border-radius:10px;
-  padding:10px 14px;
-}
-
-@media(max-width:700px){
-  .login-card{padding:25px 20px}
-  .container{padding:20px 14px}
-  .panel{padding:16px}
+.hidden{
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN
-========================= -->
+<div id="login" class="card">
 
-<div id="loginScreen">
+  <div class="logo">Q</div>
 
-  <div class="login-card">
+  <h1>QUL Admin</h1>
 
-    <div class="logo">Q</div>
+  <p>QUL Group 管理画面</p>
 
-    <h1>QUL Admin</h1>
+  <label>メールアドレス</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="メールアドレス"
+    autocomplete="username"
+  >
 
-    <div class="sub">
-      QUL Group 管理画面
-    </div>
+  <label>パスワード</label>
+  <input
+    id="password"
+    type="password"
+    placeholder="パスワード"
+    autocomplete="current-password"
+  >
 
-    <div class="field">
-      <label>メールアドレス</label>
-      <input
-        id="email"
-        type="email"
-        autocomplete="username"
-        placeholder="メールアドレス"
-      >
-    </div>
+  <button
+    id="loginButton"
+    type="button"
+    onclick="login()"
+  >
+    ログイン
+  </button>
 
-    <div class="field">
-      <label>パスワード</label>
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-        placeholder="パスワード"
-      >
-    </div>
-
-    <button
-      id="loginButton"
-      class="login-button"
-      type="button"
-    >
-      ログイン
-    </button>
-
-    <div id="loginStatus" class="hidden"></div>
-
-    <div id="loginError" class="hidden"></div>
-
-    <div id="loginSuccess" class="hidden"></div>
-
+  <div id="status">
+    診断：JavaScript OK
   </div>
+
+  <div id="error" class="hidden"></div>
 
 </div>
 
 
-<!-- =========================
-     ADMIN
-========================= -->
+<div id="admin" class="card hidden">
 
-<div id="adminScreen" class="hidden">
+  <div class="logo">Q</div>
 
-<header>
-  <div class="header-inner">
+  <h1>ログイン成功</h1>
 
-    <div class="brand">
-      <div class="brand-logo">Q</div>
-      <div>
-        <strong>QUL Admin</strong>
-        <small>Management Console</small>
-      </div>
-    </div>
-
-    <button
-      id="logoutButton"
-      class="logout"
-      type="button"
-    >
-      ログアウト
-    </button>
-
-  </div>
-</header>
-
-
-<main class="container">
-
-  <h1>管理画面</h1>
-
-  <p style="color:#6b7280">
-    QUL Group のコンテンツを管理します。
+  <p>
+    QUL Adminへのログインに成功しました。
   </p>
 
+  <p id="userInfo"></p>
 
-  <div class="tabs">
-
-    <button
-      class="tab active"
-      data-tab="news"
-      type="button"
-    >
-      ニュース
-    </button>
-
-    <button
-      class="tab"
-      data-tab="projects"
-      type="button"
-    >
-      プロジェクト
-    </button>
-
-    <button
-      class="tab"
-      data-tab="settings"
-      type="button"
-    >
-      サイト設定
-    </button>
-
-  </div>
-
-
-  <!-- NEWS -->
-
-  <section id="newsPanel" class="panel">
-
-    <div class="panel-head">
-
-      <h2>ニュース</h2>
-
-      <button
-        id="addNews"
-        class="primary"
-        type="button"
-      >
-        ＋ ニュース追加
-      </button>
-
-    </div>
-
-    <div id="newsList"></div>
-
-  </section>
-
-
-  <!-- PROJECTS -->
-
-  <section
-    id="projectsPanel"
-    class="panel hidden"
+  <button
+    type="button"
+    onclick="logout()"
   >
-
-    <div class="panel-head">
-
-      <h2>プロジェクト</h2>
-
-      <button
-        id="addProject"
-        class="primary"
-        type="button"
-      >
-        ＋ プロジェクト追加
-      </button>
-
-    </div>
-
-    <div id="projectsList"></div>
-
-  </section>
-
-
-  <!-- SETTINGS -->
-
-  <section
-    id="settingsPanel"
-    class="panel hidden"
-  >
-
-    <div class="panel-head">
-
-      <h2>サイト設定</h2>
-
-      <button
-        id="saveSettings"
-        class="primary"
-        type="button"
-      >
-        保存
-      </button>
-
-    </div>
-
-    <div class="field">
-      <label>サイト名</label>
-      <input id="setting_site_name">
-    </div>
-
-    <div class="field">
-      <label>サイト説明</label>
-      <textarea id="setting_site_description" rows="4"></textarea>
-    </div>
-
-    <div class="field">
-      <label>キャッチコピー</label>
-      <input id="setting_catchcopy">
-    </div>
-
-    <div class="field">
-      <label>Vision</label>
-      <textarea id="setting_vision" rows="4"></textarea>
-    </div>
-
-  </section>
-
-</main>
-
-</div>
-
-
-<!-- MODAL -->
-
-<div id="modal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <div class="modal-head">
-
-      <h2 id="modalTitle"></h2>
-
-      <button
-        id="closeModal"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div id="modalContent"></div>
-
-  </div>
+    ログアウト
+  </button>
 
 </div>
 
 
 <script>
 
-/* ==================================================
-   SUPABASE
-================================================== */
-
 const SUPABASE_URL =
-  "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+"https://vfdqblzbdtxbuhjxzdoq.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+"sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
 
 
-/* ==================================================
-   DIAGNOSTIC
-================================================== */
-
-function status(message){
-
-  const box =
-    document.getElementById("loginStatus");
-
-  box.classList.remove("hidden");
-
-  box.textContent = message;
-
-  console.log("[QUL ADMIN]", message);
-}
+let client;
 
 
-function error(message){
-
-  const box =
-    document.getElementById("loginError");
-
-  box.classList.remove("hidden");
-
-  box.textContent = message;
-
-  console.error("[QUL ADMIN]", message);
-}
-
-
-function success(message){
-
-  const box =
-    document.getElementById("loginSuccess");
-
-  box.classList.remove("hidden");
-
-  box.textContent = message;
-
-  console.log("[QUL ADMIN]", message);
-}
-
-
-/* ==================================================
-   SUPABASE INITIALIZE
-================================================== */
-
-let supabaseClient = null;
+/* =========================
+   起動確認
+========================= */
 
 try{
 
   if(!window.supabase){
 
     throw new Error(
-      "Supabaseライブラリを読み込めませんでした。"
+      "SupabaseのJavaScriptが読み込まれていません。"
     );
 
   }
 
-  supabaseClient =
+  client =
     window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
 
-  console.log("Supabase initialized");
+  document.getElementById("status").textContent =
+    "診断：JavaScript OK\n" +
+    "Supabase：読み込みOK\n" +
+    "ログイン待機中";
 
 }catch(e){
 
-  error(
-    "Supabase初期化エラー\n\n" +
-    e.message
-  );
+  document.getElementById("status").textContent =
+    "診断エラー";
+
+  document.getElementById("error").textContent =
+    e.message;
+
+  document.getElementById("error")
+    .classList.remove("hidden");
 
 }
 
 
-/* ==================================================
-   ELEMENTS
-================================================== */
-
-const loginButton =
-  document.getElementById("loginButton");
-
-const emailInput =
-  document.getElementById("email");
-
-const passwordInput =
-  document.getElementById("password");
-
-const loginScreen =
-  document.getElementById("loginScreen");
-
-const adminScreen =
-  document.getElementById("adminScreen");
-
-
-/* ==================================================
-   SHOW LOGIN
-================================================== */
-
-function showLogin(){
-
-  adminScreen.classList.add("hidden");
-
-  loginScreen.classList.remove("hidden");
-
-}
-
-
-/* ==================================================
-   SHOW ADMIN
-================================================== */
-
-function showAdmin(user){
-
-  console.log("SHOW ADMIN", user);
-
-  loginScreen.classList.add("hidden");
-
-  adminScreen.classList.remove("hidden");
-
-  loadNews();
-  loadProjects();
-  loadSettings();
-
-}
-
-
-/* ==================================================
-   CHECK ADMIN
-================================================== */
-
-async function checkAdmin(user){
-
-  status(
-    "認証成功\n" +
-    "ユーザーID:\n" +
-    user.id +
-    "\n\n管理者権限を確認中…"
-  );
-
-  const {
-    data,
-    error: dbError
-  } = await supabaseClient
-
-    .from("profiles")
-
-    .select("id, role")
-
-    .eq("id", user.id)
-
-    .maybeSingle();
-
-
-  if(dbError){
-
-    throw new Error(
-      "profiles確認エラー\n\n" +
-      dbError.message
-    );
-
-  }
-
-
-  if(!data){
-
-    throw new Error(
-      "管理者プロフィールが見つかりません。\n\n" +
-      "Supabaseのprofilesテーブルに\n" +
-      "このユーザーIDが存在するか確認してください。\n\n" +
-      "ID:\n" +
-      user.id
-    );
-
-  }
-
-
-  if(data.role !== "admin"){
-
-    throw new Error(
-      "管理者権限がありません。\n\n" +
-      "現在のrole: " +
-      data.role
-    );
-
-  }
-
-
-  success(
-    "管理者権限を確認しました。\n" +
-    "管理画面へ移動します…"
-  );
-
-  setTimeout(()=>{
-
-    showAdmin(user);
-
-  },500);
-
-}
-
-
-/* ==================================================
-   LOGIN
-================================================== */
+/* =========================
+   ログイン
+========================= */
 
 async function login(){
 
-  console.log("LOGIN BUTTON CLICK");
-
-  document.getElementById("loginError")
-    .classList.add("hidden");
-
-  document.getElementById("loginSuccess")
-    .classList.add("hidden");
-
   const email =
-    emailInput.value.trim();
+    document.getElementById("email").value.trim();
 
   const password =
-    passwordInput.value;
+    document.getElementById("password").value;
+
+  const button =
+    document.getElementById("loginButton");
+
+  const status =
+    document.getElementById("status");
+
+  const error =
+    document.getElementById("error");
+
+
+  error.classList.add("hidden");
 
 
   if(!email){
 
-    error("メールアドレスを入力してください。");
+    error.textContent =
+      "メールアドレスを入力してください。";
+
+    error.classList.remove("hidden");
 
     return;
 
@@ -845,47 +265,31 @@ async function login(){
 
   if(!password){
 
-    error("パスワードを入力してください。");
+    error.textContent =
+      "パスワードを入力してください。";
+
+    error.classList.remove("hidden");
 
     return;
 
   }
 
 
-  if(!supabaseClient){
+  button.disabled = true;
 
-    error(
-      "Supabaseが初期化されていません。"
-    );
-
-    return;
-
-  }
-
-
-  loginButton.disabled = true;
-
-  loginButton.textContent =
+  button.textContent =
     "ログイン中…";
+
+
+  status.textContent =
+    "① ボタン押下\n" +
+    "② Supabaseへ接続中…";
 
 
   try{
 
-    status(
-      "① ログイン処理を開始しました。"
-    );
-
-
-    status(
-      "② Supabaseに認証情報を送信中…"
-    );
-
-
-    const {
-      data,
-      error: authError
-    } =
-      await supabaseClient.auth.signInWithPassword({
+    const result =
+      await client.auth.signInWithPassword({
 
         email:email,
 
@@ -894,45 +298,63 @@ async function login(){
       });
 
 
-    if(authError){
+    if(result.error){
 
       throw new Error(
         "Supabase認証エラー\n\n" +
-        authError.message
+        result.error.message
       );
 
     }
 
 
-    if(!data || !data.user){
+    if(!result.data.user){
 
       throw new Error(
-        "認証は完了しましたが、ユーザー情報を取得できませんでした。"
+        "ユーザー情報を取得できませんでした。"
       );
 
     }
 
 
-    status(
-      "③ Supabase認証成功\n\n" +
-      "ユーザーID:\n" +
-      data.user.id
-    );
+    status.textContent =
+      "③ 認証成功\n\n" +
+      "ユーザーID：\n" +
+      result.data.user.id;
 
 
-    await checkAdmin(data.user);
+    document.getElementById("userInfo").textContent =
+      result.data.user.email || email;
+
+
+    document
+      .getElementById("login")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById("admin")
+      .classList.remove("hidden");
 
 
   }catch(e){
 
-    error(
-      "ログインに失敗しました。\n\n" +
-      e.message
-    );
+    console.error(e);
 
-    loginButton.disabled = false;
+    status.textContent =
+      "ログイン処理でエラー";
 
-    loginButton.textContent =
+
+    error.textContent =
+      e.message;
+
+
+    error.classList.remove("hidden");
+
+
+    button.disabled = false;
+
+    button.textContent =
       "ログイン";
 
   }
@@ -940,433 +362,19 @@ async function login(){
 }
 
 
-/* ==================================================
-   CLICK
-================================================== */
+/* =========================
+   ログアウト
+========================= */
 
-loginButton.addEventListener(
-  "click",
-  login
-);
+async function logout(){
 
+  await client.auth.signOut();
 
-/* ==================================================
-   ENTER
-================================================== */
-
-passwordInput.addEventListener(
-  "keydown",
-  function(e){
-
-    if(e.key === "Enter"){
-
-      e.preventDefault();
-
-      login();
-
-    }
-
-  }
-);
-
-
-/* ==================================================
-   SESSION CHECK
-================================================== */
-
-async function checkSession(){
-
-  console.log("Checking session…");
-
-  if(!supabaseClient){
-
-    return;
-
-  }
-
-
-  try{
-
-    const {
-      data,
-      error:sessionError
-    } =
-      await supabaseClient.auth.getSession();
-
-
-    if(sessionError){
-
-      console.error(sessionError);
-
-      return;
-
-    }
-
-
-    if(data.session){
-
-      console.log(
-        "Existing session found",
-        data.session.user
-      );
-
-      await checkAdmin(
-        data.session.user
-      );
-
-    }
-
-  }catch(e){
-
-    console.error(
-      "Session check error",
-      e
-    );
-
-  }
+  location.reload();
 
 }
 
+</script>
 
-/* ==================================================
-   LOGOUT
-================================================== */
-
-document
-  .getElementById("logoutButton")
-  .addEventListener(
-    "click",
-    async function(){
-
-      if(supabaseClient){
-
-        await supabaseClient.auth.signOut();
-
-      }
-
-      location.reload();
-
-    }
-  );
-
-
-/* ==================================================
-   TABS
-================================================== */
-
-document
-  .querySelectorAll(".tab")
-  .forEach(function(button){
-
-    button.addEventListener(
-      "click",
-      function(){
-
-        document
-          .querySelectorAll(".tab")
-          .forEach(b =>
-            b.classList.remove("active")
-          );
-
-        this.classList.add("active");
-
-        const tab =
-          this.dataset.tab;
-
-
-        document
-          .getElementById("newsPanel")
-          .classList.toggle(
-            "hidden",
-            tab !== "news"
-          );
-
-
-        document
-          .getElementById("projectsPanel")
-          .classList.toggle(
-            "hidden",
-            tab !== "projects"
-          );
-
-
-        document
-          .getElementById("settingsPanel")
-          .classList.toggle(
-            "hidden",
-            tab !== "settings"
-          );
-
-      }
-    );
-
-  });
-
-
-/* ==================================================
-   NEWS
-================================================== */
-
-async function loadNews(){
-
-  const list =
-    document.getElementById("newsList");
-
-  list.innerHTML =
-    '<div class="empty">読み込み中…</div>';
-
-
-  const {
-    data,
-    error:dbError
-  } =
-    await supabaseClient
-
-      .from("news")
-
-      .select("*")
-
-      .order(
-        "published_at",
-        {ascending:false}
-      );
-
-
-  if(dbError){
-
-    list.innerHTML =
-      '<div class="empty">' +
-      dbError.message +
-      '</div>';
-
-    return;
-
-  }
-
-
-  if(!data || data.length === 0){
-
-    list.innerHTML =
-      '<div class="empty">ニュースはありません。</div>';
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    data.map(function(item){
-
-      return `
-        <div class="item">
-
-          <h3>${escapeHTML(item.title || "")}</h3>
-
-          <p>${escapeHTML(item.body || "")}</p>
-
-          <div class="actions">
-
-            <button
-              class="edit"
-              type="button"
-              onclick="editNews('${item.id}')"
-            >
-              編集
-            </button>
-
-            <button
-              class="delete"
-              type="button"
-              onclick="deleteNews('${item.id}')"
-            >
-              削除
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
-
-}
-
-
-/* ==================================================
-   PROJECTS
-================================================== */
-
-async function loadProjects(){
-
-  const list =
-    document.getElementById("projectsList");
-
-  list.innerHTML =
-    '<div class="empty">読み込み中…</div>';
-
-
-  const {
-    data,
-    error:dbError
-  } =
-    await supabaseClient
-
-      .from("projects")
-
-      .select("*")
-
-      .order(
-        "sort_order",
-        {ascending:true}
-      );
-
-
-  if(dbError){
-
-    list.innerHTML =
-      '<div class="empty">' +
-      dbError.message +
-      '</div>';
-
-    return;
-
-  }
-
-
-  if(!data || data.length === 0){
-
-    list.innerHTML =
-      '<div class="empty">プロジェクトはありません。</div>';
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    data.map(function(item){
-
-      return `
-        <div class="item">
-
-          <h3>${escapeHTML(item.name || "")}</h3>
-
-          <p>${escapeHTML(item.description || "")}</p>
-
-          <p style="margin-top:8px">
-            ステータス：
-            ${escapeHTML(item.status || "")}
-          </p>
-
-          <div class="actions">
-
-            <button
-              class="edit"
-              type="button"
-              onclick="editProject('${item.id}')"
-            >
-              編集
-            </button>
-
-            <button
-              class="delete"
-              type="button"
-              onclick="deleteProject('${item.id}')"
-            >
-              削除
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
-
-}
-
-
-/* ==================================================
-   SETTINGS
-================================================== */
-
-async function loadSettings(){
-
-  const {
-    data,
-    error:dbError
-  } =
-    await supabaseClient
-
-      .from("site_settings")
-
-      .select("*");
-
-
-  if(dbError){
-
-    console.error(
-      "Settings error:",
-      dbError
-    );
-
-    return;
-
-  }
-
-
-  const settings = {};
-
-  (data || []).forEach(function(item){
-
-    settings[item.key] =
-      item.value || "";
-
-  });
-
-
-  document.getElementById(
-    "setting_site_name"
-  ).value =
-    settings.site_name || "";
-
-
-  document.getElementById(
-    "setting_site_description"
-  ).value =
-    settings.site_description || "";
-
-
-  document.getElementById(
-    "setting_catchcopy"
-  ).value =
-    settings.catchcopy || "";
-
-
-  document.getElementById(
-    "setting_vision"
-  ).value =
-    settings.vision || "";
-
-}
-
-
-/* ==================================================
-   SAVE SETTINGS
-================================================== */
-
-document
-  .getElementById("saveSettings")
-  .addEventListener(
-    "click",
-    async function(){
-
-      const settings = {
-
-        site_name:
-          document.getElementById(
-            "setting_site_name"
-          ).value,
-
-        site_description:
-          document.getElementById
+</body>
+</html>
