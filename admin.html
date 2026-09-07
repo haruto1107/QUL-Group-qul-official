@@ -17,21 +17,15 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
 }
 
-button,input,textarea,select{
-  font:inherit;
-}
+button,input,textarea,select{font:inherit}
 
-button{
-  cursor:pointer;
-}
+button{cursor:pointer}
 
-.hidden{
-  display:none!important;
-}
+.hidden{display:none!important}
 
 /* LOGIN */
 
-.login-wrap{
+#loginScreen{
   min-height:100vh;
   display:flex;
   align-items:center;
@@ -42,10 +36,10 @@ button{
 .login-card{
   width:100%;
   max-width:420px;
+  padding:32px;
   background:#fff;
   border-radius:24px;
-  padding:32px;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
+  box-shadow:0 20px 60px #00000012;
 }
 
 .logo{
@@ -62,15 +56,12 @@ button{
   margin-bottom:20px;
 }
 
-h1{
-  margin:0;
-  font-size:27px;
-}
+h1,h2,h3{margin-top:0}
 
-.sub{
+.subtitle{
   color:#6b7280;
-  margin:8px 0 25px;
   font-size:14px;
+  margin-bottom:25px;
 }
 
 label{
@@ -80,15 +71,13 @@ label{
   margin:14px 0 6px;
 }
 
-input,
-textarea,
-select{
+input,textarea,select{
   width:100%;
+  padding:12px 13px;
   border:1px solid #dfe3ea;
   border-radius:12px;
-  padding:12px 13px;
-  outline:none;
   background:#fff;
+  outline:none;
 }
 
 textarea{
@@ -96,22 +85,20 @@ textarea{
   resize:vertical;
 }
 
-input:focus,
-textarea:focus,
-select:focus{
+input:focus,textarea:focus,select:focus{
   border-color:#809CCF;
-  box-shadow:0 0 0 3px rgba(128,156,207,.15);
+  box-shadow:0 0 0 3px #809CCF22;
 }
 
 .primary{
   width:100%;
+  padding:13px;
   border:0;
   border-radius:12px;
-  padding:13px;
-  margin-top:18px;
   background:#809CCF;
   color:#fff;
   font-weight:700;
+  margin-top:18px;
 }
 
 .primary:disabled{
@@ -121,36 +108,36 @@ select:focus{
 .error{
   margin-top:14px;
   padding:12px;
+  background:#fff0f0;
+  color:#c62828;
   border-radius:10px;
-  background:#fff0f1;
-  color:#c92a2a;
   font-size:13px;
   white-space:pre-wrap;
 }
 
 /* ADMIN */
 
-.admin-wrap{
+#adminScreen{
   min-height:100vh;
 }
 
 .topbar{
   height:68px;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid #e8ebf0;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 24px;
+  background:#ffffffee;
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid #e7eaf0;
   position:sticky;
   top:0;
   z-index:10;
 }
 
 .brand{
-  font-weight:800;
   font-size:20px;
+  font-weight:800;
 }
 
 .brand span{
@@ -165,45 +152,36 @@ select:focus{
 }
 
 .logout{
+  padding:8px 12px;
   border:1px solid #ddd;
   background:#fff;
   border-radius:10px;
-  padding:8px 12px;
 }
 
 .container{
   max-width:1100px;
-  margin:0 auto;
-  padding:28px 20px 60px;
-}
-
-.page-title{
-  margin-bottom:22px;
-}
-
-.page-title h2{
-  margin:0;
-  font-size:28px;
+  margin:auto;
+  padding:30px 20px 60px;
 }
 
 .page-title p{
   color:#6b7280;
-  margin:7px 0 0;
+  margin-top:5px;
 }
 
 .tabs{
   display:flex;
   gap:8px;
-  overflow:auto;
-  margin-bottom:20px;
+  overflow-x:auto;
+  margin:25px 0 18px;
 }
 
 .tab{
+  white-space:nowrap;
+  padding:10px 16px;
   border:1px solid #e0e4ea;
   background:#fff;
   border-radius:12px;
-  padding:10px 16px;
-  white-space:nowrap;
 }
 
 .tab.active{
@@ -216,8 +194,7 @@ select:focus{
   background:#fff;
   border-radius:20px;
   padding:22px;
-  box-shadow:0 8px 30px rgba(0,0,0,.04);
-  margin-bottom:20px;
+  box-shadow:0 8px 30px #00000008;
 }
 
 .panel-head{
@@ -233,14 +210,14 @@ select:focus{
 }
 
 .small-btn{
+  padding:9px 13px;
   border:1px solid #dfe3ea;
   background:#fff;
   border-radius:10px;
-  padding:8px 12px;
 }
 
 .item{
-  border:1px solid #e6e9ee;
+  border:1px solid #e5e8ed;
   border-radius:14px;
   padding:16px;
   margin-bottom:10px;
@@ -256,84 +233,90 @@ select:focus{
 
 .item-meta{
   color:#6b7280;
-  font-size:12px;
-  margin-top:5px;
+  font-size:13px;
+  margin-top:7px;
+  white-space:pre-wrap;
 }
 
 .item-actions{
   display:flex;
   gap:8px;
-  margin-top:12px;
+  margin-top:13px;
 }
 
 .danger{
-  color:#c92a2a;
-  border-color:#f0caca;
+  color:#c62828;
+  border-color:#f1cccc;
 }
 
-.empty{
-  color:#6b7280;
-  text-align:center;
-  padding:30px 10px;
-}
-
-.status{
+.badge{
   display:inline-block;
   padding:4px 8px;
   border-radius:8px;
-  background:#eef2f7;
+  background:#eef1f5;
   font-size:11px;
-  margin-left:7px;
+  margin-left:6px;
 }
 
-.visible{
+.badge-on{
   background:#eaf6ee;
-  color:#267342;
+  color:#27733e;
 }
 
-.form-row{
+.empty{
+  text-align:center;
+  color:#6b7280;
+  padding:35px 10px;
+}
+
+.form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:15px;
 }
 
+.message{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#eaf6ee;
+  color:#27733e;
+  font-size:13px;
+}
+
 .modal-bg{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.35);
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:20px;
+  background:#0006;
   z-index:100;
 }
 
 .modal{
-  background:#fff;
   width:100%;
   max-width:600px;
   max-height:90vh;
   overflow:auto;
+  padding:25px;
+  background:#fff;
   border-radius:20px;
-  padding:24px;
-}
-
-.modal h3{
-  margin-top:0;
 }
 
 .modal-actions{
   display:flex;
-  gap:10px;
   justify-content:flex-end;
+  gap:10px;
   margin-top:20px;
 }
 
 .modal-actions button{
+  padding:10px 16px;
+  border-radius:10px;
   border:1px solid #ddd;
   background:#fff;
-  border-radius:10px;
-  padding:10px 16px;
 }
 
 .modal-actions .save{
@@ -343,11 +326,12 @@ select:focus{
 }
 
 .notice{
-  padding:12px;
+  padding:13px;
   background:#f3f6fa;
   border-radius:12px;
-  margin-bottom:15px;
+  color:#4b5563;
   font-size:13px;
+  margin-bottom:18px;
 }
 
 @media(max-width:600px){
@@ -368,10 +352,9 @@ select:focus{
     padding:17px;
   }
 
-  .form-row{
+  .form-grid{
     grid-template-columns:1fr;
   }
-
 }
 </style>
 </head>
@@ -383,7 +366,7 @@ select:focus{
      LOGIN
 ========================= -->
 
-<div id="loginScreen" class="login-wrap">
+<div id="loginScreen">
 
   <div class="login-card">
 
@@ -391,7 +374,7 @@ select:focus{
 
     <h1>QUL Admin</h1>
 
-    <div class="sub">
+    <div class="subtitle">
       QUL Group 管理画面
     </div>
 
@@ -417,7 +400,6 @@ select:focus{
       id="loginButton"
       class="primary"
       type="button"
-      onclick="login()"
     >
       ログイン
     </button>
@@ -433,190 +415,193 @@ select:focus{
      ADMIN
 ========================= -->
 
-<div id="adminScreen" class="admin-wrap hidden">
+<div id="adminScreen" class="hidden">
 
-  <header class="topbar">
+<header class="topbar">
 
-    <div class="brand">
-      QUL <span>Admin</span>
-    </div>
+  <div class="brand">
+    QUL <span>Admin</span>
+  </div>
 
-    <div class="user-area">
+  <div class="user-area">
 
-      <span id="userEmail"></span>
+    <span id="userEmail"></span>
+
+    <button
+      class="logout"
+      id="logoutButton"
+    >
+      ログアウト
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="container">
+
+  <div class="page-title">
+
+    <h2>管理画面</h2>
+
+    <p>
+      QUL公式サイトのコンテンツを管理します。
+    </p>
+
+  </div>
+
+
+  <!-- TABS -->
+
+  <div class="tabs">
+
+    <button class="tab active" data-tab="news">
+      📰 ニュース
+    </button>
+
+    <button class="tab" data-tab="projects">
+      🚀 プロジェクト
+    </button>
+
+    <button class="tab" data-tab="settings">
+      ⚙️ サイト設定
+    </button>
+
+    <button class="tab" data-tab="reserve">
+      📅 予約
+    </button>
+
+  </div>
+
+
+  <!-- NEWS -->
+
+  <section
+    id="newsPanel"
+    class="panel"
+  >
+
+    <div class="panel-head">
+
+      <h3>ニュース</h3>
 
       <button
-        class="logout"
-        onclick="logout()"
+        class="small-btn"
+        id="addNewsButton"
       >
-        ログアウト
+        ＋ ニュース追加
       </button>
 
     </div>
 
-  </header>
-
-
-  <main class="container">
-
-    <div class="page-title">
-
-      <h2>管理画面</h2>
-
-      <p>
-        QUL公式サイトの情報を管理します。
-      </p>
-
+    <div id="newsList">
+      読み込み中…
     </div>
 
+  </section>
 
-    <div class="tabs">
 
-      <button
-        class="tab active"
-        onclick="switchTab('news',this)"
-      >
-        📰 ニュース
-      </button>
+  <!-- PROJECTS -->
 
-      <button
-        class="tab"
-        onclick="switchTab('projects',this)"
-      >
-        🚀 プロジェクト
-      </button>
+  <section
+    id="projectsPanel"
+    class="panel hidden"
+  >
+
+    <div class="panel-head">
+
+      <h3>プロジェクト</h3>
 
       <button
-        class="tab"
-        onclick="switchTab('settings',this)"
+        class="small-btn"
+        id="addProjectButton"
       >
-        ⚙️ サイト設定
-      </button>
-
-      <button
-        class="tab"
-        onclick="switchTab('reserve',this)"
-      >
-        📅 予約
+        ＋ プロジェクト追加
       </button>
 
     </div>
 
+    <div id="projectsList">
+      読み込み中…
+    </div>
 
-    <!-- NEWS -->
-
-    <section id="newsPanel" class="panel">
-
-      <div class="panel-head">
-
-        <h3>ニュース</h3>
-
-        <button
-          class="small-btn"
-          onclick="openNewsModal()"
-        >
-          ＋ ニュース追加
-        </button>
-
-      </div>
-
-      <div id="newsList">
-        読み込み中…
-      </div>
-
-    </section>
+  </section>
 
 
-    <!-- PROJECTS -->
+  <!-- SETTINGS -->
 
-    <section id="projectsPanel" class="panel hidden">
+  <section
+    id="settingsPanel"
+    class="panel hidden"
+  >
 
-      <div class="panel-head">
+    <div class="panel-head">
 
-        <h3>プロジェクト</h3>
+      <h3>サイト設定</h3>
 
-        <button
-          class="small-btn"
-          onclick="openProjectModal()"
-        >
-          ＋ 追加
-        </button>
+    </div>
 
-      </div>
+    <div class="notice">
+      QUL公式サイトで使用する基本情報を編集できます。
+    </div>
 
-      <div id="projectsList">
-        読み込み中…
-      </div>
+    <label>サイト名</label>
 
-    </section>
+    <input id="settingSiteName">
 
+    <label>サイト説明</label>
 
-    <!-- SETTINGS -->
+    <textarea id="settingDescription"></textarea>
 
-    <section id="settingsPanel" class="panel hidden">
+    <label>キャッチコピー</label>
 
-      <div class="panel-head">
+    <input id="settingCatchcopy">
 
-        <h3>サイト設定</h3>
+    <label>Vision</label>
 
-      </div>
+    <textarea id="settingVision"></textarea>
 
-      <div class="notice">
-        QUL公式サイトで使用する基本情報を編集できます。
-      </div>
+    <button
+      class="primary"
+      id="saveSettingsButton"
+    >
+      設定を保存
+    </button>
 
-      <label>サイト名</label>
+    <div
+      id="settingsMessage"
+      class="message hidden"
+    >
+      保存しました。
+    </div>
 
-      <input id="settingSiteName">
-
-      <label>サイト説明</label>
-
-      <textarea id="settingDescription"></textarea>
-
-      <label>キャッチコピー</label>
-
-      <input id="settingCatchcopy">
-
-      <label>Vision</label>
-
-      <textarea id="settingVision"></textarea>
-
-      <button
-        class="primary"
-        onclick="saveSettings()"
-      >
-        設定を保存
-      </button>
-
-      <div id="settingsMessage"></div>
-
-    </section>
+  </section>
 
 
-    <!-- RESERVE -->
+  <!-- RESERVE -->
 
-    <section id="reservePanel" class="panel hidden">
+  <section
+    id="reservePanel"
+    class="panel hidden"
+  >
 
-      <div class="panel-head">
+    <h3>予約</h3>
 
-        <h3>予約</h3>
+    <div class="notice">
+      QUL Groupの予約ページを確認できます。
+    </div>
 
-      </div>
+    <button
+      class="primary"
+      id="reserveButton"
+    >
+      予約ページを開く
+    </button>
 
-      <div class="notice">
-        QUL Groupの予約ページを確認できます。
-      </div>
+  </section>
 
-      <button
-        class="primary"
-        onclick="openReserve()"
-      >
-        予約ページを開く
-      </button>
-
-    </section>
-
-  </main>
+</main>
 
 </div>
 
@@ -628,13 +613,9 @@ select:focus{
 <div
   id="modalBg"
   class="modal-bg hidden"
-  onclick="closeModal(event)"
 >
 
-  <div
-    class="modal"
-    onclick="event.stopPropagation()"
-  >
+  <div class="modal">
 
     <div id="modalContent"></div>
 
@@ -645,15 +626,16 @@ select:focus{
 
 <script>
 
-/* ==========================================
+/* =========================================
    SUPABASE
-========================================== */
+========================================= */
 
 const SUPABASE_URL =
 "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+
 
 const supabaseClient =
 window.supabase.createClient(
@@ -662,75 +644,80 @@ window.supabase.createClient(
 );
 
 
-/* ==========================================
-   起動
-========================================== */
+/* =========================================
+   ELEMENTS
+========================================= */
 
-window.addEventListener("load", async()=>{
+const loginScreen =
+document.getElementById("loginScreen");
 
-  try{
+const adminScreen =
+document.getElementById("adminScreen");
 
-    const {
-      data
-    } =
-    await supabaseClient.auth.getSession();
+const loginButton =
+document.getElementById("loginButton");
 
-    if(data.session){
+const loginError =
+document.getElementById("loginError");
 
-      await checkAdmin(
-        data.session.user
-      );
+
+/* =========================================
+   LOGIN
+========================================= */
+
+loginButton.addEventListener(
+  "click",
+  login
+);
+
+
+document
+  .getElementById("password")
+  .addEventListener(
+    "keydown",
+    e=>{
+
+      if(e.key === "Enter"){
+
+        login();
+
+      }
 
     }
+  );
 
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-});
-
-
-/* ==========================================
-   LOGIN
-========================================== */
 
 async function login(){
 
+  loginError.classList.add("hidden");
+
   const email =
-    document.getElementById("email")
-      .value.trim();
+    document
+      .getElementById("email")
+      .value
+      .trim();
 
   const password =
-    document.getElementById("password")
+    document
+      .getElementById("password")
       .value;
-
-  const button =
-    document.getElementById("loginButton");
-
-  const errorBox =
-    document.getElementById("loginError");
-
-
-  errorBox.classList.add("hidden");
 
 
   if(!email || !password){
 
-    errorBox.textContent =
+    loginError.textContent =
       "メールアドレスとパスワードを入力してください。";
 
-    errorBox.classList.remove("hidden");
+    loginError.classList.remove("hidden");
 
     return;
 
   }
 
 
-  button.disabled = true;
+  loginButton.disabled = true;
 
-  button.textContent =
+  loginButton.textContent =
     "ログイン中…";
 
 
@@ -765,23 +752,21 @@ async function login(){
     }
 
 
-    await checkAdmin(
-      data.user
-    );
+    showAdmin(data.user);
 
 
   }catch(error){
 
     console.error(error);
 
-    errorBox.textContent =
+    loginError.textContent =
       error.message;
 
-    errorBox.classList.remove("hidden");
+    loginError.classList.remove("hidden");
 
-    button.disabled = false;
+    loginButton.disabled = false;
 
-    button.textContent =
+    loginButton.textContent =
       "ログイン";
 
   }
@@ -789,89 +774,15 @@ async function login(){
 }
 
 
-/* ==========================================
-   ADMIN CHECK
-========================================== */
-
-async function checkAdmin(user){
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabaseClient
-      .from("profiles")
-      .select("id,role")
-      .eq("id",user.id)
-      .maybeSingle();
-
-
-    if(error){
-
-      throw error;
-
-    }
-
-
-    if(!data){
-
-      throw new Error(
-        "管理者プロフィールが見つかりません。"
-      );
-
-    }
-
-
-    if(data.role !== "admin"){
-
-      await supabaseClient.auth.signOut();
-
-      throw new Error(
-        "このアカウントには管理者権限がありません。"
-      );
-
-    }
-
-
-    showAdmin(user);
-
-
-  }catch(error){
-
-    console.error(error);
-
-    document
-      .getElementById("loginError")
-      .textContent =
-        error.message;
-
-    document
-      .getElementById("loginError")
-      .classList
-      .remove("hidden");
-
-  }
-
-}
-
-
-/* ==========================================
-   SHOW ADMIN
-========================================== */
+/* =========================================
+   ADMIN DISPLAY
+========================================= */
 
 function showAdmin(user){
 
-  document
-    .getElementById("loginScreen")
-    .classList
-    .add("hidden");
+  loginScreen.classList.add("hidden");
 
-  document
-    .getElementById("adminScreen")
-    .classList
-    .remove("hidden");
+  adminScreen.classList.remove("hidden");
 
   document
     .getElementById("userEmail")
@@ -883,98 +794,139 @@ function showAdmin(user){
 }
 
 
-/* ==========================================
+/* =========================================
+   SESSION
+========================================= */
+
+window.addEventListener(
+  "load",
+  async()=>{
+
+    const {
+      data
+    } =
+    await supabaseClient.auth
+      .getSession();
+
+    if(data.session){
+
+      showAdmin(
+        data.session.user
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================
    LOGOUT
-========================================== */
+========================================= */
 
-async function logout(){
+document
+  .getElementById("logoutButton")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut();
 
-  location.reload();
+      location.reload();
 
-}
+    }
+  );
 
 
-/* ==========================================
-   TAB
-========================================== */
+/* =========================================
+   TABS
+========================================= */
 
-function switchTab(name,button){
+document
+  .querySelectorAll(".tab")
+  .forEach(button=>{
 
-  document
-    .querySelectorAll(".tab")
-    .forEach(x=>
-      x.classList.remove("active")
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        document
+          .querySelectorAll(".tab")
+          .forEach(x=>
+            x.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+
+        const tab =
+          button.dataset.tab;
+
+
+        document
+          .getElementById("newsPanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("projectsPanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("settingsPanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("reservePanel")
+          .classList.add("hidden");
+
+
+        if(tab === "news"){
+
+          document
+            .getElementById("newsPanel")
+            .classList.remove("hidden");
+
+          loadNews();
+
+        }
+
+        if(tab === "projects"){
+
+          document
+            .getElementById("projectsPanel")
+            .classList.remove("hidden");
+
+          loadProjects();
+
+        }
+
+        if(tab === "settings"){
+
+          document
+            .getElementById("settingsPanel")
+            .classList.remove("hidden");
+
+          loadSettings();
+
+        }
+
+        if(tab === "reserve"){
+
+          document
+            .getElementById("reservePanel")
+            .classList.remove("hidden");
+
+        }
+
+      }
     );
 
-  button.classList.add("active");
+  });
 
 
-  document
-    .getElementById("newsPanel")
-    .classList.add("hidden");
-
-  document
-    .getElementById("projectsPanel")
-    .classList.add("hidden");
-
-  document
-    .getElementById("settingsPanel")
-    .classList.add("hidden");
-
-  document
-    .getElementById("reservePanel")
-    .classList.add("hidden");
-
-
-  if(name==="news"){
-
-    document
-      .getElementById("newsPanel")
-      .classList.remove("hidden");
-
-    loadNews();
-
-  }
-
-
-  if(name==="projects"){
-
-    document
-      .getElementById("projectsPanel")
-      .classList.remove("hidden");
-
-    loadProjects();
-
-  }
-
-
-  if(name==="settings"){
-
-    document
-      .getElementById("settingsPanel")
-      .classList.remove("hidden");
-
-    loadSettings();
-
-  }
-
-
-  if(name==="reserve"){
-
-    document
-      .getElementById("reservePanel")
-      .classList.remove("hidden");
-
-  }
-
-}
-
-
-/* ==========================================
-   NEWS LOAD
-========================================== */
+/* =========================================
+   NEWS
+========================================= */
 
 async function loadNews(){
 
@@ -992,7 +944,10 @@ async function loadNews(){
   await supabaseClient
     .from("news")
     .select("*")
-    .order("created_at",{ascending:false});
+    .order(
+      "created_at",
+      {ascending:false}
+    );
 
 
   if(error){
@@ -1005,10 +960,12 @@ async function loadNews(){
   }
 
 
-  if(!data || data.length===0){
+  if(!data.length){
 
     list.innerHTML =
-      `<div class="empty">ニュースはまだありません。</div>`;
+      `<div class="empty">
+        ニュースはまだありません。
+      </div>`;
 
     return;
 
@@ -1024,25 +981,29 @@ async function loadNews(){
 
           ${escapeHtml(item.title || "無題")}
 
-          <span class="status">
+          <span class="badge ${
+            item.is_published
+              ? "badge-on"
+              : ""
+          }">
 
-            ${item.is_published ? "公開" : "非公開"}
+            ${item.is_published
+              ? "公開"
+              : "非公開"}
 
           </span>
 
         </div>
 
         <div class="item-meta">
-
           ${escapeHtml(item.body || "")}
-
         </div>
 
         <div class="item-actions">
 
           <button
             class="small-btn"
-            onclick='openNewsModal(${JSON.stringify(item)})'
+            onclick="editNews('${item.id}')"
           >
             編集
           </button>
@@ -1063,28 +1024,56 @@ async function loadNews(){
 }
 
 
-/* ==========================================
-   NEWS MODAL
-========================================== */
+document
+  .getElementById("addNewsButton")
+  .addEventListener(
+    "click",
+    ()=>openNewsModal()
+  );
+
+
+async function editNews(id){
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("news")
+    .select("*")
+    .eq("id",id)
+    .single();
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+  openNewsModal(data);
+
+}
+
 
 function openNewsModal(item=null){
-
-  const isEdit =
-    !!item;
 
   document
     .getElementById("modalContent")
     .innerHTML = `
 
       <h3>
-        ${isEdit ? "ニュース編集" : "ニュース追加"}
+        ${item ? "ニュース編集" : "ニュース追加"}
       </h3>
 
       <label>タイトル</label>
 
       <input
         id="newsTitle"
-        value="${escapeAttr(item?.title || "")}"
+        value="${attr(item?.title || "")}"
       >
 
       <label>本文</label>
@@ -1106,7 +1095,9 @@ function openNewsModal(item=null){
 
       <div class="modal-actions">
 
-        <button onclick="closeModal()">
+        <button
+          onclick="closeModal()"
+        >
           キャンセル
         </button>
 
@@ -1122,10 +1113,7 @@ function openNewsModal(item=null){
     `;
 
 
-  document
-    .getElementById("modalBg")
-    .classList
-    .remove("hidden");
+  openModal();
 
 }
 
@@ -1135,12 +1123,14 @@ async function saveNews(id){
   const title =
     document
       .getElementById("newsTitle")
-      .value.trim();
+      .value
+      .trim();
 
   const body =
     document
       .getElementById("newsBody")
-      .value.trim();
+      .value
+      .trim();
 
   const is_published =
     document
@@ -1162,7 +1152,8 @@ async function saveNews(id){
     title,
     body,
     is_published,
-    updated_at:new Date().toISOString()
+    updated_at:
+      new Date().toISOString()
 
   };
 
@@ -1186,6 +1177,7 @@ async function saveNews(id){
         .insert({
 
           ...payload,
+
           published_at:
             is_published
               ? new Date().toISOString()
@@ -1199,7 +1191,7 @@ async function saveNews(id){
   if(result.error){
 
     alert(
-      "保存できませんでした。\n\n" +
+      "保存失敗\n\n" +
       result.error.message
     );
 
@@ -1245,14 +1237,16 @@ async function deleteNews(id){
 }
 
 
-/* ==========================================
+/* =========================================
    PROJECTS
-========================================== */
+========================================= */
 
 async function loadProjects(){
 
   const list =
-    document.getElementById("projectsList");
+    document.getElementById(
+      "projectsList"
+    );
 
   list.textContent =
     "読み込み中…";
@@ -1265,7 +1259,10 @@ async function loadProjects(){
   await supabaseClient
     .from("projects")
     .select("*")
-    .order("sort_order",{ascending:true});
+    .order(
+      "sort_order",
+      {ascending:true}
+    );
 
 
   if(error){
@@ -1278,10 +1275,12 @@ async function loadProjects(){
   }
 
 
-  if(!data || data.length===0){
+  if(!data.length){
 
     list.innerHTML =
-      `<div class="empty">プロジェクトはありません。</div>`;
+      `<div class="empty">
+        プロジェクトはありません。
+      </div>`;
 
     return;
 
@@ -1297,10 +1296,8 @@ async function loadProjects(){
 
           ${escapeHtml(item.name || "無題")}
 
-          <span class="status">
-
+          <span class="badge">
             ${escapeHtml(item.status || "")}
-
           </span>
 
         </div>
@@ -1309,7 +1306,11 @@ async function loadProjects(){
 
           ${escapeHtml(item.description || "")}
 
-          ${item.is_visible ? " ・ 表示中" : " ・ 非表示"}
+          <br>
+
+          ${item.is_visible
+            ? "表示中"
+            : "非表示"}
 
         </div>
 
@@ -1317,7 +1318,7 @@ async function loadProjects(){
 
           <button
             class="small-btn"
-            onclick='openProjectModal(${JSON.stringify(item)})'
+            onclick="editProject('${item.id}')"
           >
             編集
           </button>
@@ -1338,6 +1339,41 @@ async function loadProjects(){
 }
 
 
+document
+  .getElementById("addProjectButton")
+  .addEventListener(
+    "click",
+    ()=>openProjectModal()
+  );
+
+
+async function editProject(id){
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("projects")
+    .select("*")
+    .eq("id",id)
+    .single();
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+  openProjectModal(data);
+
+}
+
+
 function openProjectModal(item=null){
 
   document
@@ -1345,21 +1381,25 @@ function openProjectModal(item=null){
     .innerHTML = `
 
       <h3>
-        ${item ? "プロジェクト編集" : "プロジェクト追加"}
+        ${item
+          ? "プロジェクト編集"
+          : "プロジェクト追加"}
       </h3>
 
       <label>名前</label>
 
       <input
         id="projectName"
-        value="${escapeAttr(item?.name || "")}"
+        value="${attr(item?.name || "")}"
       >
 
       <label>説明</label>
 
-      <textarea id="projectDescription">${escapeHtml(item?.description || "")}</textarea>
+      <textarea
+        id="projectDescription"
+      >${escapeHtml(item?.description || "")}</textarea>
 
-      <div class="form-row">
+      <div class="form-grid">
 
         <div>
 
@@ -1367,8 +1407,8 @@ function openProjectModal(item=null){
 
           <input
             id="projectStatus"
-            value="${escapeAttr(item?.status || "")}"
-            placeholder="開発中 / 提供予定 など"
+            value="${attr(item?.status || "")}"
+            placeholder="開発中"
           >
 
         </div>
@@ -1392,7 +1432,9 @@ function openProjectModal(item=null){
         <input
           id="projectVisible"
           type="checkbox"
-          ${item?.is_visible !== false ? "checked" : ""}
+          ${item?.is_visible !== false
+            ? "checked"
+            : ""}
           style="width:auto"
         >
 
@@ -1402,7 +1444,9 @@ function openProjectModal(item=null){
 
       <div class="modal-actions">
 
-        <button onclick="closeModal()">
+        <button
+          onclick="closeModal()"
+        >
           キャンセル
         </button>
 
@@ -1411,26 +1455,4 @@ function openProjectModal(item=null){
           onclick="saveProject('${item?.id || ""}')"
         >
           保存
-        </button>
-
-      </div>
-
-    `;
-
-
-  document
-    .getElementById("modalBg")
-    .classList
-    .remove("hidden");
-
-}
-
-
-async function saveProject(id){
-
-  const payload = {
-
-    name:
-      document
-        .getElementById("projectName")
-        .value.t
+        
