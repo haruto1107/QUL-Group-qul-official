@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="QUL Group｜まだないものを、あたりまえに。">
+<title>QUL Group</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#809CCF;
+  --blue-dark:#6685c1;
+  --text:#172033;
+  --sub:#697386;
+  --bg:#f7f9fc;
+  --white:#fff;
+  --line:#e7ebf2;
+  --shadow:0 12px 35px rgba(30,50,90,.08);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family:"Noto Sans JP","Helvetica Neue",Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.8;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(230,235,242,.8);
+}
+
+.nav{
+  max-width:1150px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.nav-links{
+  display:flex;
+  gap:24px;
+  font-size:13px;
+  color:#4d586c;
+}
+
+.nav-links a:hover{
+  color:var(--blue-dark);
+}
+
+.hero{
+  min-height:92vh;
+  display:flex;
+  align-items:center;
+  background:
+    radial-gradient(circle at 85% 20%,rgba(128,156,207,.2),transparent 30%),
+    linear-gradient(135deg,#fff,#f1f5fc);
+  padding:140px 20px 90px;
+}
+
+.hero-inner{
+  width:100%;
+  max-width:1150px;
+  margin:auto;
+}
+
+.eyebrow{
+  color:var(--blue-dark);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2em;
+}
+
+.hero h1{
+  font-size:clamp(46px,8vw,92px);
+  line-height:1.08;
+  margin:18px 0;
+  letter-spacing:-.05em;
+}
+
+.hero p{
+  color:var(--sub);
+  margin:6px 0;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 20px;
+  border-radius:999px;
+  background:var(--blue);
+  color:white;
+  font-weight:700;
+  font-size:14px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  background:var(--blue-dark);
+}
+
+.btn.secondary{
+  background:white;
+  color:var(--text);
+  border:1px solid var(--line);
+}
+
+.section{
+  max-width:1150px;
+  margin:auto;
+  padding:100px 20px;
+}
+
+.section-title{
+  font-size:38px;
+  margin:0 0 8px;
+  letter-spacing:-.04em;
+}
+
+.section-lead{
+  color:var(--sub);
+  margin:0 0 35px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+  box-shadow:var(--shadow);
+}
+
+.card h3{
+  margin:0 0 8px;
+}
+
+.card p{
+  color:var(--sub);
+  font-size:14px;
+  margin:0;
+}
+
+.vision{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:45px;
+  box-shadow:var(--shadow);
+}
+
+.vision-label{
+  color:var(--blue-dark);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.vision h3{
+  font-size:28px;
+  margin:10px 0;
+}
+
+.projects{
+  display:grid;
+  gap:12px;
+}
+
+.project{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.project-button{
+  width:100%;
+  padding:20px 22px;
+  border:0;
+  background:white;
+  text-align:left;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+}
+
+.project-detail{
+  display:none;
+  padding:0 22px 22px;
+  color:var(--sub);
+  font-size:14px;
+}
+
+.project.open .project-detail{
+  display:block;
+}
+
+.project.open .project-button{
+  color:var(--blue-dark);
+}
+
+.shop-links{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.shop-link{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px 20px;
+  box-shadow:var(--shadow);
+}
+
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.news-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:22px;
+}
+
+.news-date{
+  color:var(--blue-dark);
+  font-size:12px;
+  font-weight:700;
+}
+
+.news-card h3{
+  margin:8px 0;
+  font-size:18px;
+}
+
+.news-card p{
+  margin:0;
+  color:var(--sub);
+  font-size:14px;
+}
+
+.contact-box{
+  background:var(--text);
+  color:white;
+  border-radius:30px;
+  padding:45px;
+}
+
+.contact-box p{
+  color:#cbd2df;
+}
+
+.footer{
+  background:white;
+  border-top:1px solid var(--line);
+  padding:40px 20px;
+}
+
+.footer-inner{
+  max-width:1150px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+.footer-links{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--sub);
+}
+
+.admin-link{
+  color:var(--blue-dark);
+  font-weight:800;
+}
+
+.mobile-menu{
+  display:none;
+}
+
+@media(max-width:800px){
+  .nav-links{display:none}
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .news-grid{
+    grid-template-columns:1fr;
+  }
+
+  .mobile-menu{
+    display:block;
+    border:0;
+    background:none;
+    font-size:22px;
+  }
+
+  .section{
+    padding:70px 18px;
+  }
+
+  .hero{
+    padding:130px 18px 70px;
+  }
+}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:46px;
+  }
+
+  .vision,
+  .contact-box{
+    padding:28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<nav class="nav">
+  <a href="#top" class="logo">QUL</a>
+
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#business">Business</a>
+    <a href="#projects">Projects</a>
+    <a href="#news">News</a>
+    <a href="#shop">Shop</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <button class="mobile-menu" onclick="toggleMobile()">☰</button>
+</nav>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="eyebrow">QUL GROUP</div>
+
+    <h1>
+      まだないものを、<br>
+      あたりまえに。
+    </h1>
+
+    <p>Technology × 企画力 × デザイン性</p>
+    <p>「あったらいいな」を、「あってよかった」へ。</p>
+
+    <div class="hero-buttons">
+      <a class="btn" href="#about">QULについて</a>
+      <a class="btn secondary"
+         href="https://nandemostorenet.stores.jp/"
+         target="_blank">
+        QUL Shop ↗
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="about">
+
+  <h2 class="section-title">About</h2>
+  <p class="section-lead">
+    QULは、企画・テクノロジー・デザインを組み合わせ、
+    「まだない価値」をつくるブランドです。
+  </p>
+
+  <div class="vision">
+
+    <div class="vision-label">VISION</div>
+
+    <h3>
+      “あったらいいな”を、<br>
+      “あってよかった”へ。
+    </h3>
+
+    <p>
+      まだないものを見つけ、未来のあたりまえへ。
+    </p>
+
+  </div>
+
+</section>
+
+<section class="section" id="business">
+
+  <h2 class="section-title">Business</h2>
+  <p class="section-lead">QULが取り組む4つの領域。</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>Goods</h3>
+      <p>
+        オリジナルグッズ・ハンドメイド商品の企画と制作。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Service</h3>
+      <p>
+        会員・ポイント・決済など、便利なサービスを開発。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Planning</h3>
+      <p>
+        イベント、脱出ゲーム、店舗企画などをプロデュース。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Design</h3>
+      <p>
+        ブランド・ショップ・サービスの体験をデザイン。
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="projects">
+
+  <h2 class="section-title">Projects</h2>
+  <p class="section-lead">
+    QULがつくる、現在進行形のプロジェクト。
+  </p>
+
+  <div class="projects">
+
+    <div class="project">
+      <button class="project-button">
+        QUL Pay
+        <span>＋</span>
+      </button>
+      <div class="project-detail">
+        QULの会員向け決済・ポイントサービス。
+      </div>
+    </div>
+
+    <div class="project">
+      <button class="project-button">
+        QUL Connect
+        <span>＋</span>
+      </button>
+      <div class="project-detail">
+        予約・ニュース・ショップなどをまとめる
+        QULのモバイルサービス構想。
+      </div>
+    </div>
+
+    <div class="project">
+      <button class="project-button">
+        QUL NOW
+        <span>＋</span>
+      </button>
+      <div class="project-detail">
+        イベントや商品情報を届けるQULの情報ハブ。
+      </div>
+    </div>
+
+    <div class="project">
+      <button class="project-button">
+        QUL Reserve
+        <span>＋</span>
+      </button>
+      <div class="project-detail">
+        イベント・サービス予約をもっとシンプルに。
+      </div>
+    </div>
+
+    <div class="project">
+      <button class="project-button">
+        Q-PASS
+        <span>＋</span>
+      </button>
+      <div class="project-detail">
+        QRコードを活用した入退場・認証システム。
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="news">
+
+  <h2 class="section-title">News</h2>
+  <p class="section-lead">
+    QULからのお知らせ。
+  </p>
+
+  <div id="news-container" class="news-grid">
+
+    <div class="news-card">
+      <div class="news-date">QUL NEWS</div>
+      <h3>最新情報を準備中</h3>
+      <p>
+        QULからのお知らせをここに掲載します。
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="shop">
+
+  <h2 class="section-title">Shop</h2>
+  <p class="section-lead">
+    QULの商品・予約はこちら。
+  </p>
+
+  <div class="shop-links">
+
+    <a
+      class="shop-link"
+      href="https://nandemostorenet.stores.jp/"
+      target="_blank">
+      QUL Shop ↗
+    </a>
+
+    <a
+      class="shop-link"
+      href="https://nandemostorenet.stores.jp/reserve/QUL-Group_reserve"
+      target="_blank">
+      予約ページ ↗
+    </a>
+
+  </div>
+
+</section>
+
+<section class="section" id="contact">
+
+  <div class="contact-box">
+
+    <h2>Contact</h2>
+
+    <p>
+      QULへのお問い合わせはこちら。
+    </p>
+
+    <a
+      class="btn"
+      href="https://nandemostorenet.stores.jp/inquiry"
+      target="_blank">
+      お問い合わせ ↗
+    </a>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer class="footer">
+
+<div class="footer-inner">
+
+  <div>
+    <strong>QUL Group</strong>
+    <br>
+    <small>
+      ずっと、明日も。まいにちに、lovin’を。
+    </small>
+  </div>
+
+  <div class="footer-links">
+
+    <a
+      href="https://nandemostorenet.stores.jp/tokushoho"
+      target="_blank">
+      特定商取引法に基づく表示
+    </a>
+
+    <a
+      href="https://nandemostorenet.stores.jp/terms/store"
+      target="_blank">
+      利用規約
+    </a>
+
+    <a
+      href="https://nandemostorenet.stores.jp/privacy_policy"
+      target="_blank">
+      プライバシーポリシー
+    </a>
+
+    <a class="admin-link" href="admin.html">
+      管理画面へ
+    </a>
+
+  </div>
+
+</div>
+
+</footer>
+
+<script>
+
+/* =========================
+   Supabase
+========================= */
+
+const SUPABASE_URL =
+  "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================
+   News
+========================= */
+
+async function loadNews(){
+
+  const container =
+    document.getElementById("news-container");
+
+  try{
+
+    const {data,error} =
+      await supabaseClient
+        .from("news")
+        .select("*")
+        .order("created_at",{ascending:false})
+        .limit(6);
+
+    if(error) throw error;
+
+    if(!data || data.length === 0) return;
+
+    container.innerHTML = "";
+
+    data.forEach(item => {
+
+      const card =
+        document.createElement("div");
+
+      card.className = "news-card";
+
+      card.innerHTML = `
+        <div class="news-date">
+          ${escapeHtml(item.date || "")}
+        </div>
+
+        <h3>
+          ${escapeHtml(item.title || "")}
+        </h3>
+
+        <p>
+          ${escapeHtml(item.content || "")}
+        </p>
+      `;
+
+      container.appendChild(card);
+
+    });
+
+  }catch(error){
+
+    console.log("News:",error);
+
+  }
+
+}
+
+
+/* =========================
+   Safe HTML
+========================= */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================
+   Project accordion
+========================= */
+
+document
+  .querySelectorAll(".project-button")
+  .forEach(button => {
+
+    button.addEventListener("click",()=>{
+
+      const project =
+        button.parentElement;
+
+      project.classList.toggle("open");
+
+      const symbol =
+        button.querySelector("span");
+
+      symbol.textContent =
+        project.classList.contains("open")
+          ? "−"
+          : "＋";
+
+    });
+
+  });
+
+
+/* =========================
+   Mobile
+========================= */
+
+function toggleMobile(){
+
+  const links =
+    document.querySelector(".nav-links");
+
+  if(
+    links.style.display === "flex"
+  ){
+
+    links.style.display = "";
+
+  }else{
+
+    links.style.display = "flex";
+    links.style.position = "absolute";
+    links.style.top = "60px";
+    links.style.left = "0";
+    links.style.right = "0";
+    links.style.padding = "20px";
+    links.style.background = "#fff";
+    links.style.flexDirection = "column";
+
+  }
+
+}
+
+
+/* =========================
+   Start
+========================= */
+
+loadNews();
+
+</script>
+
+</body>
+</html>
