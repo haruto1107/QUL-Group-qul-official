@@ -2,180 +2,652 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>QUL Admin Login</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QUL Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
+  background:#f5f7fb;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* LOGIN */
+
+.login-wrap{
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#f5f7fb;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
+  padding:20px;
 }
 
-.card{
-  width:calc(100% - 40px);
-  max-width:400px;
-  background:white;
-  padding:32px;
+.login-card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
   border-radius:24px;
+  padding:32px;
   box-shadow:0 20px 60px rgba(0,0,0,.08);
 }
 
 .logo{
   width:56px;
   height:56px;
-  border-radius:17px;
-  background:#809CCF;
-  color:white;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:24px;
+  border-radius:17px;
+  background:#809CCF;
+  color:#fff;
+  font-size:25px;
   font-weight:800;
   margin-bottom:20px;
 }
 
 h1{
-  margin:0 0 8px;
-  font-size:26px;
+  margin:0;
+  font-size:27px;
 }
 
-p{
+.sub{
   color:#6b7280;
+  margin:8px 0 25px;
   font-size:14px;
 }
 
-input{
-  width:100%;
-  padding:13px;
-  margin-top:7px;
-  margin-bottom:15px;
-  border:1px solid #ddd;
-  border-radius:12px;
-  font-size:16px;
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin:14px 0 6px;
 }
 
-button{
+input,
+textarea,
+select{
   width:100%;
-  padding:13px;
+  border:1px solid #dfe3ea;
+  border-radius:12px;
+  padding:12px 13px;
+  outline:none;
+  background:#fff;
+}
+
+textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#809CCF;
+  box-shadow:0 0 0 3px rgba(128,156,207,.15);
+}
+
+.primary{
+  width:100%;
   border:0;
   border-radius:12px;
+  padding:13px;
+  margin-top:18px;
   background:#809CCF;
-  color:white;
+  color:#fff;
   font-weight:700;
-  font-size:15px;
 }
 
-button:disabled{
+.primary:disabled{
   opacity:.5;
 }
 
-#status{
-  margin-top:15px;
-  padding:12px;
-  border-radius:10px;
-  background:#f1f5f9;
-  font-size:13px;
-  white-space:pre-wrap;
-}
-
-#error{
-  margin-top:15px;
+.error{
+  margin-top:14px;
   padding:12px;
   border-radius:10px;
   background:#fff0f1;
-  color:#dc3545;
+  color:#c92a2a;
   font-size:13px;
   white-space:pre-wrap;
 }
 
-#admin{
-  text-align:center;
+/* ADMIN */
+
+.admin-wrap{
+  min-height:100vh;
 }
 
-.hidden{
-  display:none;
+.topbar{
+  height:68px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid #e8ebf0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.brand{
+  font-weight:800;
+  font-size:20px;
+}
+
+.brand span{
+  color:#809CCF;
+}
+
+.user-area{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:13px;
+}
+
+.logout{
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:10px;
+  padding:8px 12px;
+}
+
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+.page-title{
+  margin-bottom:22px;
+}
+
+.page-title h2{
+  margin:0;
+  font-size:28px;
+}
+
+.page-title p{
+  color:#6b7280;
+  margin:7px 0 0;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin-bottom:20px;
+}
+
+.tab{
+  border:1px solid #e0e4ea;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 16px;
+  white-space:nowrap;
+}
+
+.tab.active{
+  background:#809CCF;
+  border-color:#809CCF;
+  color:#fff;
+}
+
+.panel{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 8px 30px rgba(0,0,0,.04);
+  margin-bottom:20px;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.panel-head h3{
+  margin:0;
+}
+
+.small-btn{
+  border:1px solid #dfe3ea;
+  background:#fff;
+  border-radius:10px;
+  padding:8px 12px;
+}
+
+.item{
+  border:1px solid #e6e9ee;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:10px;
+}
+
+.item:last-child{
+  margin-bottom:0;
+}
+
+.item-title{
+  font-weight:700;
+}
+
+.item-meta{
+  color:#6b7280;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.item-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.danger{
+  color:#c92a2a;
+  border-color:#f0caca;
+}
+
+.empty{
+  color:#6b7280;
+  text-align:center;
+  padding:30px 10px;
+}
+
+.status{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  background:#eef2f7;
+  font-size:11px;
+  margin-left:7px;
+}
+
+.visible{
+  background:#eaf6ee;
+  color:#267342;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:100;
+}
+
+.modal{
+  background:#fff;
+  width:100%;
+  max-width:600px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:20px;
+  padding:24px;
+}
+
+.modal h3{
+  margin-top:0;
+}
+
+.modal-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:20px;
+}
+
+.modal-actions button{
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:10px;
+  padding:10px 16px;
+}
+
+.modal-actions .save{
+  background:#809CCF;
+  border-color:#809CCF;
+  color:#fff;
+}
+
+.notice{
+  padding:12px;
+  background:#f3f6fa;
+  border-radius:12px;
+  margin-bottom:15px;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:0 15px;
+  }
+
+  .user-area span{
+    display:none;
+  }
+
+  .container{
+    padding:20px 14px 50px;
+  }
+
+  .panel{
+    padding:17px;
+  }
+
+  .form-row{
+    grid-template-columns:1fr;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<div id="login" class="card">
 
-  <div class="logo">Q</div>
+<!-- =========================
+     LOGIN
+========================= -->
 
-  <h1>QUL Admin</h1>
+<div id="loginScreen" class="login-wrap">
 
-  <p>QUL Group 管理画面</p>
+  <div class="login-card">
 
-  <label>メールアドレス</label>
-  <input
-    id="email"
-    type="email"
-    placeholder="メールアドレス"
-    autocomplete="username"
-  >
+    <div class="logo">Q</div>
 
-  <label>パスワード</label>
-  <input
-    id="password"
-    type="password"
-    placeholder="パスワード"
-    autocomplete="current-password"
-  >
+    <h1>QUL Admin</h1>
 
-  <button
-    id="loginButton"
-    type="button"
-    onclick="login()"
-  >
-    ログイン
-  </button>
+    <div class="sub">
+      QUL Group 管理画面
+    </div>
 
-  <div id="status">
-    診断：JavaScript OK
+    <label>メールアドレス</label>
+
+    <input
+      id="email"
+      type="email"
+      autocomplete="username"
+      placeholder="メールアドレス"
+    >
+
+    <label>パスワード</label>
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="パスワード"
+    >
+
+    <button
+      id="loginButton"
+      class="primary"
+      type="button"
+      onclick="login()"
+    >
+      ログイン
+    </button>
+
+    <div id="loginError" class="error hidden"></div>
+
   </div>
-
-  <div id="error" class="hidden"></div>
 
 </div>
 
 
-<div id="admin" class="card hidden">
+<!-- =========================
+     ADMIN
+========================= -->
 
-  <div class="logo">Q</div>
+<div id="adminScreen" class="admin-wrap hidden">
 
-  <h1>ログイン成功</h1>
+  <header class="topbar">
 
-  <p>
-    QUL Adminへのログインに成功しました。
-  </p>
+    <div class="brand">
+      QUL <span>Admin</span>
+    </div>
 
-  <p id="userInfo"></p>
+    <div class="user-area">
 
-  <button
-    type="button"
-    onclick="logout()"
+      <span id="userEmail"></span>
+
+      <button
+        class="logout"
+        onclick="logout()"
+      >
+        ログアウト
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="page-title">
+
+      <h2>管理画面</h2>
+
+      <p>
+        QUL公式サイトの情報を管理します。
+      </p>
+
+    </div>
+
+
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        onclick="switchTab('news',this)"
+      >
+        📰 ニュース
+      </button>
+
+      <button
+        class="tab"
+        onclick="switchTab('projects',this)"
+      >
+        🚀 プロジェクト
+      </button>
+
+      <button
+        class="tab"
+        onclick="switchTab('settings',this)"
+      >
+        ⚙️ サイト設定
+      </button>
+
+      <button
+        class="tab"
+        onclick="switchTab('reserve',this)"
+      >
+        📅 予約
+      </button>
+
+    </div>
+
+
+    <!-- NEWS -->
+
+    <section id="newsPanel" class="panel">
+
+      <div class="panel-head">
+
+        <h3>ニュース</h3>
+
+        <button
+          class="small-btn"
+          onclick="openNewsModal()"
+        >
+          ＋ ニュース追加
+        </button>
+
+      </div>
+
+      <div id="newsList">
+        読み込み中…
+      </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section id="projectsPanel" class="panel hidden">
+
+      <div class="panel-head">
+
+        <h3>プロジェクト</h3>
+
+        <button
+          class="small-btn"
+          onclick="openProjectModal()"
+        >
+          ＋ 追加
+        </button>
+
+      </div>
+
+      <div id="projectsList">
+        読み込み中…
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section id="settingsPanel" class="panel hidden">
+
+      <div class="panel-head">
+
+        <h3>サイト設定</h3>
+
+      </div>
+
+      <div class="notice">
+        QUL公式サイトで使用する基本情報を編集できます。
+      </div>
+
+      <label>サイト名</label>
+
+      <input id="settingSiteName">
+
+      <label>サイト説明</label>
+
+      <textarea id="settingDescription"></textarea>
+
+      <label>キャッチコピー</label>
+
+      <input id="settingCatchcopy">
+
+      <label>Vision</label>
+
+      <textarea id="settingVision"></textarea>
+
+      <button
+        class="primary"
+        onclick="saveSettings()"
+      >
+        設定を保存
+      </button>
+
+      <div id="settingsMessage"></div>
+
+    </section>
+
+
+    <!-- RESERVE -->
+
+    <section id="reservePanel" class="panel hidden">
+
+      <div class="panel-head">
+
+        <h3>予約</h3>
+
+      </div>
+
+      <div class="notice">
+        QUL Groupの予約ページを確認できます。
+      </div>
+
+      <button
+        class="primary"
+        onclick="openReserve()"
+      >
+        予約ページを開く
+      </button>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+  id="modalBg"
+  class="modal-bg hidden"
+  onclick="closeModal(event)"
+>
+
+  <div
+    class="modal"
+    onclick="event.stopPropagation()"
   >
-    ログアウト
-  </button>
+
+    <div id="modalContent"></div>
+
+  </div>
 
 </div>
 
 
 <script>
+
+/* ==========================================
+   SUPABASE
+========================================== */
 
 const SUPABASE_URL =
 "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
@@ -183,92 +655,73 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
 
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-let client;
 
+/* ==========================================
+   起動
+========================================== */
 
-/* =========================
-   起動確認
-========================= */
+window.addEventListener("load", async()=>{
 
-try{
+  try{
 
-  if(!window.supabase){
+    const {
+      data
+    } =
+    await supabaseClient.auth.getSession();
 
-    throw new Error(
-      "SupabaseのJavaScriptが読み込まれていません。"
-    );
+    if(data.session){
+
+      await checkAdmin(
+        data.session.user
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
 
   }
 
-  client =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-  document.getElementById("status").textContent =
-    "診断：JavaScript OK\n" +
-    "Supabase：読み込みOK\n" +
-    "ログイン待機中";
-
-}catch(e){
-
-  document.getElementById("status").textContent =
-    "診断エラー";
-
-  document.getElementById("error").textContent =
-    e.message;
-
-  document.getElementById("error")
-    .classList.remove("hidden");
-
-}
+});
 
 
-/* =========================
-   ログイン
-========================= */
+/* ==========================================
+   LOGIN
+========================================== */
 
 async function login(){
 
   const email =
-    document.getElementById("email").value.trim();
+    document.getElementById("email")
+      .value.trim();
 
   const password =
-    document.getElementById("password").value;
+    document.getElementById("password")
+      .value;
 
   const button =
     document.getElementById("loginButton");
 
-  const status =
-    document.getElementById("status");
-
-  const error =
-    document.getElementById("error");
+  const errorBox =
+    document.getElementById("loginError");
 
 
-  error.classList.add("hidden");
+  errorBox.classList.add("hidden");
 
 
-  if(!email){
+  if(!email || !password){
 
-    error.textContent =
-      "メールアドレスを入力してください。";
+    errorBox.textContent =
+      "メールアドレスとパスワードを入力してください。";
 
-    error.classList.remove("hidden");
-
-    return;
-
-  }
-
-
-  if(!password){
-
-    error.textContent =
-      "パスワードを入力してください。";
-
-    error.classList.remove("hidden");
+    errorBox.classList.remove("hidden");
 
     return;
 
@@ -281,34 +734,29 @@ async function login(){
     "ログイン中…";
 
 
-  status.textContent =
-    "① ボタン押下\n" +
-    "② Supabaseへ接続中…";
-
-
   try{
 
-    const result =
-      await client.auth.signInWithPassword({
+    const {
+      data,
+      error
+    } =
+    await supabaseClient.auth
+      .signInWithPassword({
 
-        email:email,
-
-        password:password
+        email,
+        password
 
       });
 
 
-    if(result.error){
+    if(error){
 
-      throw new Error(
-        "Supabase認証エラー\n\n" +
-        result.error.message
-      );
+      throw error;
 
     }
 
 
-    if(!result.data.user){
+    if(!data.user){
 
       throw new Error(
         "ユーザー情報を取得できませんでした。"
@@ -317,40 +765,19 @@ async function login(){
     }
 
 
-    status.textContent =
-      "③ 認証成功\n\n" +
-      "ユーザーID：\n" +
-      result.data.user.id;
+    await checkAdmin(
+      data.user
+    );
 
 
-    document.getElementById("userInfo").textContent =
-      result.data.user.email || email;
+  }catch(error){
 
+    console.error(error);
 
-    document
-      .getElementById("login")
-      .classList.add("hidden");
+    errorBox.textContent =
+      error.message;
 
-
-    document
-      .getElementById("admin")
-      .classList.remove("hidden");
-
-
-  }catch(e){
-
-    console.error(e);
-
-    status.textContent =
-      "ログイン処理でエラー";
-
-
-    error.textContent =
-      e.message;
-
-
-    error.classList.remove("hidden");
-
+    errorBox.classList.remove("hidden");
 
     button.disabled = false;
 
@@ -362,19 +789,648 @@ async function login(){
 }
 
 
-/* =========================
-   ログアウト
-========================= */
+/* ==========================================
+   ADMIN CHECK
+========================================== */
+
+async function checkAdmin(user){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+      .from("profiles")
+      .select("id,role")
+      .eq("id",user.id)
+      .maybeSingle();
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    if(!data){
+
+      throw new Error(
+        "管理者プロフィールが見つかりません。"
+      );
+
+    }
+
+
+    if(data.role !== "admin"){
+
+      await supabaseClient.auth.signOut();
+
+      throw new Error(
+        "このアカウントには管理者権限がありません。"
+      );
+
+    }
+
+
+    showAdmin(user);
+
+
+  }catch(error){
+
+    console.error(error);
+
+    document
+      .getElementById("loginError")
+      .textContent =
+        error.message;
+
+    document
+      .getElementById("loginError")
+      .classList
+      .remove("hidden");
+
+  }
+
+}
+
+
+/* ==========================================
+   SHOW ADMIN
+========================================== */
+
+function showAdmin(user){
+
+  document
+    .getElementById("loginScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("adminScreen")
+    .classList
+    .remove("hidden");
+
+  document
+    .getElementById("userEmail")
+    .textContent =
+      user.email || "";
+
+  loadNews();
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
 
 async function logout(){
 
-  await client.auth.signOut();
+  await supabaseClient.auth.signOut();
 
   location.reload();
 
 }
 
-</script>
 
-</body>
-</html>
+/* ==========================================
+   TAB
+========================================== */
+
+function switchTab(name,button){
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(x=>
+      x.classList.remove("active")
+    );
+
+  button.classList.add("active");
+
+
+  document
+    .getElementById("newsPanel")
+    .classList.add("hidden");
+
+  document
+    .getElementById("projectsPanel")
+    .classList.add("hidden");
+
+  document
+    .getElementById("settingsPanel")
+    .classList.add("hidden");
+
+  document
+    .getElementById("reservePanel")
+    .classList.add("hidden");
+
+
+  if(name==="news"){
+
+    document
+      .getElementById("newsPanel")
+      .classList.remove("hidden");
+
+    loadNews();
+
+  }
+
+
+  if(name==="projects"){
+
+    document
+      .getElementById("projectsPanel")
+      .classList.remove("hidden");
+
+    loadProjects();
+
+  }
+
+
+  if(name==="settings"){
+
+    document
+      .getElementById("settingsPanel")
+      .classList.remove("hidden");
+
+    loadSettings();
+
+  }
+
+
+  if(name==="reserve"){
+
+    document
+      .getElementById("reservePanel")
+      .classList.remove("hidden");
+
+  }
+
+}
+
+
+/* ==========================================
+   NEWS LOAD
+========================================== */
+
+async function loadNews(){
+
+  const list =
+    document.getElementById("newsList");
+
+  list.textContent =
+    "読み込み中…";
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("news")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+
+  if(error){
+
+    list.innerHTML =
+      `<div class="error">${escapeHtml(error.message)}</div>`;
+
+    return;
+
+  }
+
+
+  if(!data || data.length===0){
+
+    list.innerHTML =
+      `<div class="empty">ニュースはまだありません。</div>`;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    data.map(item=>`
+
+      <div class="item">
+
+        <div class="item-title">
+
+          ${escapeHtml(item.title || "無題")}
+
+          <span class="status">
+
+            ${item.is_published ? "公開" : "非公開"}
+
+          </span>
+
+        </div>
+
+        <div class="item-meta">
+
+          ${escapeHtml(item.body || "")}
+
+        </div>
+
+        <div class="item-actions">
+
+          <button
+            class="small-btn"
+            onclick='openNewsModal(${JSON.stringify(item)})'
+          >
+            編集
+          </button>
+
+          <button
+            class="small-btn danger"
+            onclick="deleteNews('${item.id}')"
+          >
+            削除
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* ==========================================
+   NEWS MODAL
+========================================== */
+
+function openNewsModal(item=null){
+
+  const isEdit =
+    !!item;
+
+  document
+    .getElementById("modalContent")
+    .innerHTML = `
+
+      <h3>
+        ${isEdit ? "ニュース編集" : "ニュース追加"}
+      </h3>
+
+      <label>タイトル</label>
+
+      <input
+        id="newsTitle"
+        value="${escapeAttr(item?.title || "")}"
+      >
+
+      <label>本文</label>
+
+      <textarea id="newsBody">${escapeHtml(item?.body || "")}</textarea>
+
+      <label>
+
+        <input
+          id="newsPublished"
+          type="checkbox"
+          ${item?.is_published ? "checked" : ""}
+          style="width:auto"
+        >
+
+        公開する
+
+      </label>
+
+      <div class="modal-actions">
+
+        <button onclick="closeModal()">
+          キャンセル
+        </button>
+
+        <button
+          class="save"
+          onclick="saveNews('${item?.id || ""}')"
+        >
+          保存
+        </button>
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById("modalBg")
+    .classList
+    .remove("hidden");
+
+}
+
+
+async function saveNews(id){
+
+  const title =
+    document
+      .getElementById("newsTitle")
+      .value.trim();
+
+  const body =
+    document
+      .getElementById("newsBody")
+      .value.trim();
+
+  const is_published =
+    document
+      .getElementById("newsPublished")
+      .checked;
+
+
+  if(!title){
+
+    alert("タイトルを入力してください。");
+
+    return;
+
+  }
+
+
+  const payload = {
+
+    title,
+    body,
+    is_published,
+    updated_at:new Date().toISOString()
+
+  };
+
+
+  let result;
+
+
+  if(id){
+
+    result =
+      await supabaseClient
+        .from("news")
+        .update(payload)
+        .eq("id",id);
+
+  }else{
+
+    result =
+      await supabaseClient
+        .from("news")
+        .insert({
+
+          ...payload,
+          published_at:
+            is_published
+              ? new Date().toISOString()
+              : null
+
+        });
+
+  }
+
+
+  if(result.error){
+
+    alert(
+      "保存できませんでした。\n\n" +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+
+  closeModal();
+
+  loadNews();
+
+}
+
+
+async function deleteNews(id){
+
+  if(!confirm(
+    "このニュースを削除しますか？"
+  )) return;
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+    .from("news")
+    .delete()
+    .eq("id",id);
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+  loadNews();
+
+}
+
+
+/* ==========================================
+   PROJECTS
+========================================== */
+
+async function loadProjects(){
+
+  const list =
+    document.getElementById("projectsList");
+
+  list.textContent =
+    "読み込み中…";
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("projects")
+    .select("*")
+    .order("sort_order",{ascending:true});
+
+
+  if(error){
+
+    list.innerHTML =
+      `<div class="error">${escapeHtml(error.message)}</div>`;
+
+    return;
+
+  }
+
+
+  if(!data || data.length===0){
+
+    list.innerHTML =
+      `<div class="empty">プロジェクトはありません。</div>`;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    data.map(item=>`
+
+      <div class="item">
+
+        <div class="item-title">
+
+          ${escapeHtml(item.name || "無題")}
+
+          <span class="status">
+
+            ${escapeHtml(item.status || "")}
+
+          </span>
+
+        </div>
+
+        <div class="item-meta">
+
+          ${escapeHtml(item.description || "")}
+
+          ${item.is_visible ? " ・ 表示中" : " ・ 非表示"}
+
+        </div>
+
+        <div class="item-actions">
+
+          <button
+            class="small-btn"
+            onclick='openProjectModal(${JSON.stringify(item)})'
+          >
+            編集
+          </button>
+
+          <button
+            class="small-btn danger"
+            onclick="deleteProject('${item.id}')"
+          >
+            削除
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+function openProjectModal(item=null){
+
+  document
+    .getElementById("modalContent")
+    .innerHTML = `
+
+      <h3>
+        ${item ? "プロジェクト編集" : "プロジェクト追加"}
+      </h3>
+
+      <label>名前</label>
+
+      <input
+        id="projectName"
+        value="${escapeAttr(item?.name || "")}"
+      >
+
+      <label>説明</label>
+
+      <textarea id="projectDescription">${escapeHtml(item?.description || "")}</textarea>
+
+      <div class="form-row">
+
+        <div>
+
+          <label>ステータス</label>
+
+          <input
+            id="projectStatus"
+            value="${escapeAttr(item?.status || "")}"
+            placeholder="開発中 / 提供予定 など"
+          >
+
+        </div>
+
+        <div>
+
+          <label>表示順</label>
+
+          <input
+            id="projectOrder"
+            type="number"
+            value="${item?.sort_order ?? 0}"
+          >
+
+        </div>
+
+      </div>
+
+      <label>
+
+        <input
+          id="projectVisible"
+          type="checkbox"
+          ${item?.is_visible !== false ? "checked" : ""}
+          style="width:auto"
+        >
+
+        公式サイトに表示する
+
+      </label>
+
+      <div class="modal-actions">
+
+        <button onclick="closeModal()">
+          キャンセル
+        </button>
+
+        <button
+          class="save"
+          onclick="saveProject('${item?.id || ""}')"
+        >
+          保存
+        </button>
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById("modalBg")
+    .classList
+    .remove("hidden");
+
+}
+
+
+async function saveProject(id){
+
+  const payload = {
+
+    name:
+      document
+        .getElementById("projectName")
+        .value.t
