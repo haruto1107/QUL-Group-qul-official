@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#809CCF">
+  <title>QUL Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        "Noto Sans JP",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: #f5f7fb;
+      color: #20242b;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.08);
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: #809CCF;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -.04em;
+    }
+
+    .subtitle {
+      color: #737985;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 18px 0 8px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #e1e5ec;
+      background: #fafbfc;
+      border-radius: 14px;
+      padding: 13px 14px;
+      outline: none;
+      transition: .2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #809CCF;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(128,156,207,.13);
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 22px;
+      border: 0;
+      border-radius: 15px;
+      padding: 14px;
+      background: #809CCF;
+      color: white;
+      font-weight: 700;
+    }
+
+    .primary:hover {
+      opacity: .9;
+    }
+
+    .error {
+      margin-top: 14px;
+      color: #c63d3d;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ADMIN */
+    #adminScreen {
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid #e8ebf0;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #809CCF;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .logout {
+      border: 1px solid #e1e5ec;
+      background: white;
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px 70px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      margin: 0 0 7px;
+      font-size: 30px;
+      letter-spacing: -.04em;
+    }
+
+    .welcome p {
+      margin: 0;
+      color: #747b87;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      border: 0;
+      background: white;
+      border: 1px solid #e5e8ee;
+      border-radius: 13px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: #809CCF;
+      color: white;
+      border-color: #809CCF;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.04);
+      margin-bottom: 20px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .panel-header h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .secondary {
+      border: 1px solid #dfe4eb;
+      background: white;
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .danger {
+      border: 0;
+      background: #fff0f0;
+      color: #c33;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .news-item,
+    .project-item {
+      border: 1px solid #e8ebf0;
+      border-radius: 17px;
+      padding: 17px;
+      margin-bottom: 12px;
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .item-title {
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .item-date {
+      font-size: 12px;
+      color: #8a909b;
+    }
+
+    .item-content {
+      margin-top: 10px;
+      color: #626975;
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .edit {
+      border: 0;
+      background: #eef3fb;
+      color: #526b9a;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .empty {
+      text-align: center;
+      color: #8a909b;
+      padding: 35px 10px;
+    }
+
+    .status {
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: #f3f6fb;
+      color: #64718a;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .status.success {
+      background: #edf8f1;
+      color: #34794d;
+    }
+
+    .status.error-status {
+      background: #fff0f0;
+      color: #b33b3b;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(20,25,35,.45);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: white;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 24px;
+      padding: 25px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+    }
+
+    .close {
+      border: 0;
+      background: #f0f2f6;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .form-actions button {
+      flex: 1;
+    }
+
+    @media (max-width: 600px) {
+      .login-card {
+        padding: 27px;
+      }
+
+      main {
+        padding: 25px 14px 50px;
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .welcome h2 {
+        font-size: 25px;
+      }
+
+      .header-inner {
+        padding: 12px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="logo">QUL</div>
+
+    <h1>QUL Admin</h1>
+
+    <div class="subtitle">
+      QUL Group 管理画面<br>
+      管理者アカウントでログインしてください。
+    </div>
+
+    <form id="loginForm">
+
+      <label for="email">メールアドレス</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="admin@example.com"
+        autocomplete="email"
+        required
+      >
+
+      <label for="password">パスワード</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="パスワード"
+        autocomplete="current-password"
+        required
+      >
+
+      <button class="primary" type="submit">
+        管理画面へログイン
+      </button>
+
+      <div id="loginError" class="error"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- ADMIN -->
+<section id="adminScreen" class="hidden">
+
+  <header>
+
+    <div class="header-inner">
+
+      <div class="brand">
+        <div class="brand-mark">QUL</div>
+        <div>
+          <div>QUL Admin</div>
+          <div style="font-size:11px;color:#8a909b;font-weight:500;">
+            Management Console
+          </div>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="logout">
+        ログアウト
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <div class="welcome">
+      <h2>管理画面</h2>
+      <p id="userEmail">ログイン中...</p>
+    </div>
+
+
+    <div class="tabs">
+
+      <button class="tab active" data-tab="news">
+        ニュース
+      </button>
+
+      <button class="tab" data-tab="projects">
+        プロジェクト
+      </button>
+
+      <button class="tab" data-tab="settings">
+        サイト設定
+      </button>
+
+    </div>
+
+
+    <!-- NEWS -->
+    <section id="newsPanel" class="tab-panel">
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h3>ニュース管理</h3>
+
+          <button id="addNewsBtn" class="secondary">
+            ＋ ニュース追加
+          </button>
+
+        </div>
+
+        <div id="newsStatus" class="status">
+          読み込み中...
+        </div>
+
+        <div id="newsList"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+    <section id="projectsPanel" class="tab-panel hidden">
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h3>プロジェクト管理</h3>
+
+          <button id="addProjectBtn" class="secondary">
+            ＋ 追加
+          </button>
+
+        </div>
+
+        <div id="projectsStatus" class="status">
+          読み込み中...
+        </div>
+
+        <div id="projectsList"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+    <section id="settingsPanel" class="tab-panel hidden">
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h3>サイト設定</h3>
+
+        </div>
+
+        <div id="settingsStatus" class="status">
+          読み込み中...
+        </div>
+
+        <form id="settingsForm">
+
+          <label for="siteName">サイト名</label>
+          <input id="siteName">
+
+          <label for="siteDescription">サイト説明</label>
+          <textarea id="siteDescription"></textarea>
+
+          <label for="siteCatchcopy">キャッチコピー</label>
+          <input id="siteCatchcopy">
+
+          <label for="siteVision">Vision</label>
+          <textarea id="siteVision"></textarea>
+
+          <button class="primary" type="submit">
+            設定を保存
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</section>
+
+
+<!-- NEWS MODAL -->
+<div id="newsModal" class="modal hidden">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3 id="newsModalTitle">ニュース追加</h3>
+
+      <button class="close" onclick="closeNewsModal()">×</button>
+
+    </div>
+
+    <form id="newsForm">
+
+      <input type="hidden" id="newsId">
+
+      <label for="newsDate">日付</label>
+      <input id="newsDate" type="date" required>
+
+      <label for="newsTitle">タイトル</label>
+      <input id="newsTitle" required>
+
+      <label for="newsContent">内容</label>
+      <textarea id="newsContent" required></textarea>
+
+      <div class="form-actions">
+
+        <button type="button" class="secondary" onclick="closeNewsModal()">
+          キャンセル
+        </button>
+
+        <button type="submit" class="primary" style="margin-top:0;">
+          保存
+        </button>
+
+      </div>
+
+      <div id="newsFormError" class="error"></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- PROJECT MODAL -->
+<div id="projectModal" class="modal hidden">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3 id="projectModalTitle">プロジェクト追加</h3>
+
+      <button class="close" onclick="closeProjectModal()">×</button>
+
+    </div>
+
+    <form id="projectForm">
+
+      <input type="hidden" id="projectId">
+
+      <label for="projectName">プロジェクト名</label>
+      <input id="projectName" required>
+
+      <label for="projectDescription">説明</label>
+      <textarea id="projectDescription"></textarea>
+
+      <label for="projectStatus">ステータス</label>
+
+      <select id="projectStatus">
+
+        <option value="開発中">開発中</option>
+        <option value="提供予定">提供予定</option>
+        <option value="構想中">構想中</option>
+        <option value="準備中">準備中</option>
+        <option value="終了">終了</option>
+
+      </select>
+
+      <div class="form-actions">
+
+        <button type="button" class="secondary" onclick="closeProjectModal()">
+          キャンセル
+        </button>
+
+        <button type="submit" class="primary" style="margin-top:0;">
+          保存
+        </button>
+
+      </div>
+
+      <div id="projectFormError" class="error"></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* =========================
+     SUPABASE
+  ========================= */
+
+  const SUPABASE_URL =
+    "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /* =========================
+     ELEMENTS
+  ========================= */
+
+  const loginScreen =
+    document.getElementById("loginScreen");
+
+  const adminScreen =
+    document.getElementById("adminScreen");
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const loginError =
+    document.getElementById("loginError");
+
+  const userEmail =
+    document.getElementById("userEmail");
+
+
+  /* =========================
+     AUTH
+  ========================= */
+
+  async function checkAuth() {
+
+    const {
+      data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+      showLogin();
+
+      return;
+
+    }
+
+    await checkAdmin(user);
+
+  }
+
+
+  async function checkAdmin(user) {
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+    if (error) {
+
+      showLogin();
+
+      loginError.textContent =
+        "管理者情報の確認に失敗しました。";
+
+      return;
+
+    }
+
+
+    if (!data || data.role !== "admin") {
+
+      await supabaseClient.auth.signOut();
+
+      showLogin();
+
+      loginError.textContent =
+        "このアカウントには管理者権限がありません。";
+
+      return;
+
+    }
+
+
+    showAdmin(user);
+
+  }
+
+
+  loginForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    loginError.textContent = "";
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+
+    if (error) {
+
+      loginError.textContent =
+        "ログインできませんでした。メールアドレスまたはパスワードを確認してください。";
+
+      return;
+
+    }
+
+
+    await checkAdmin(data.user);
+
+  });
+
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+      await supabaseClient.auth.signOut();
+
+      showLogin();
+
+    });
+
+
+  function showLogin() {
+
+    loginScreen.classList.remove("hidden");
+    adminScreen.classList.add("hidden");
+
+  }
+
+
+  function showAdmin(user) {
+
+    loginScreen.classList.add("hidden");
+    adminScreen.classList.remove("hidden");
+
+    userEmail.textContent =
+      user.email || "管理者";
+
+    loadNews();
+    loadProjects();
+    loadSettings();
+
+  }
+
+
+  /* =========================
+     TABS
+  ========================= */
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(tab => {
+
+      tab.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".tab")
+          .forEach(t =>
+            t.classList.remove("active")
+          );
+
+        tab.classList.add("active");
+
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach(panel =>
+            panel.classList.add("hidden")
+          );
+
+        document
+          .getElementById(
+            tab.dataset.tab + "Panel"
+          )
+          .classList.remove("hidden");
+
+      });
+
+    });
+
+
+  /* =========================
+     NEWS
+  ========================= */
+
+  async function loadNews() {
+
+    const status =
+      document.getElementById("newsStatus");
+
+    const list =
+      document.getElementById("newsList");
+
+    status.textContent = "読み込み中...";
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("news")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+
+      status.className =
+        "status error-status";
+
+      status.textContent =
+        "ニュースを読み込めませんでした。";
+
+      return;
+
+    }
+
+
+    status.className =
+      "status success";
+
+    status.textContent =
+      `${data.length}件のニュース`;
+
+
+    if (!data.length) {
+
+      list.innerHTML =
+        `<div class="empty">
+          まだニュースがありません。
+        </div>`;
+
+      return;
+
+    }
+
+
+    list.innerHTML =
+      data.map(item => `
+
+        <div class="news-item">
+
+          <div class="item-top">
+
+            <div>
+
+              <div class="item-title">
+                ${escapeHtml(item.title || "")}
+              </div>
+
+              <div class="item-date">
+                ${escapeHtml(item.date || "")}
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="edit"
+                onclick='editNews(${JSON.stringify(item)})'>
+                編集
+              </button>
+
+              <button
+                class="danger"
+                onclick="deleteNews('${item.id}')">
+                削除
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="item-content">
+            ${escapeHtml(item.content || "")}
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  document
+    .getElementById("addNewsBtn")
+    .addEventListener("click", () => {
+
+      document.getElementById("newsId").value = "";
+      document.getElementById("newsDate").value =
+        new Date().toISOString().slice(0, 10);
+      document.getElementById("newsTitle").value = "";
+      document.getElementById("newsContent").value = "";
+
+      document.getElementById("newsModalTitle").textContent =
+        "ニュース追加";
+
+      document
+        .getElementById("newsModal")
+        .classList.remove("hidden");
+
+    });
+
+
+  function editNews(item) {
+
+    document.getElementById("newsId").value =
+      item.id || "";
+
+    document.getElementById("newsDate").value =
+      item.date || "";
+
+    document.getElementById("newsTitle").value =
+      item.title || "";
+
+    document.getElementById("newsContent").value =
+      item.content || "";
+
+    document.getElementById("newsModalTitle").textContent =
+      "ニュース編集";
+
+    document
+      .getElementById("newsModal")
+      .classList.remove("hidden");
+
+  }
+
+
+  function closeNewsModal() {
+
+    document
+      .getElementById("newsModal")
+      .classList.add("hidden");
+
+  }
+
+
+  window.closeNewsModal =
+    closeNewsModal;
+
+  window.editNews =
+    editNews;
+
+
+  document
+    .getElementById("newsForm")
+    .addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      const errorBox =
+        document.getElementById("newsFormError");
+
+      errorBox.textContent = "";
+
+      const id =
+        document.getElementById("newsId").value;
+
+      const payload = {
+
+        date:
+          document.getElementById("newsDate").value,
+
+        title:
+          document.getElementById("newsTitle").value.trim(),
+
+        content:
+          document.getElementById("newsContent").value.trim()
+
+      };
+
+
+      let result;
+
+
+      if (id) {
+
+        result =
+          await supabaseClient
+            .from("news")
+            .update(payload)
+            .eq("id", id);
+
+      } else {
+
+        result =
+          await supabaseClient
+   
