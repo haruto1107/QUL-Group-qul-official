@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>QUL Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #222;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans JP",
+        sans-serif;
+    }
+
+    header {
+      height: 68px;
+      background: white;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: #809CCF;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .logout {
+      border: 0;
+      background: #f1f1f1;
+      border-radius: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 68px);
+    }
+
+    aside {
+      width: 230px;
+      background: white;
+      border-right: 1px solid #eee;
+      padding: 18px 12px;
+    }
+
+    .nav-button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 11px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .nav-button:hover,
+    .nav-button.active {
+      background: #edf2fb;
+      color: #42649c;
+      font-weight: 700;
+    }
+
+    main {
+      flex: 1;
+      padding: 28px;
+      max-width: 1200px;
+    }
+
+    .page-title {
+      margin-bottom: 24px;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .page-title p {
+      margin: 7px 0 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 25px rgba(0,0,0,.04);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    button.primary {
+      border: 0;
+      background: #809CCF;
+      color: white;
+      border-radius: 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      border: 0;
+      background: #eee;
+      color: #333;
+      border-radius: 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    button.danger {
+      border: 0;
+      background: #fff0f0;
+      color: #c33;
+      border-radius: 9px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .item {
+      border: 1px solid #eee;
+      border-radius: 13px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .item-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .item-description {
+      color: #777;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 11px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #809CCF;
+      box-shadow: 0 0 0 3px rgba(128,156,207,.12);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 14px 0 7px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      color: #777;
+      padding: 15px 0;
+    }
+
+    .empty {
+      padding: 25px;
+      text-align: center;
+      color: #888;
+      background: #fafafa;
+      border-radius: 12px;
+    }
+
+    .status {
+      padding: 12px 14px;
+      background: #f0f5ff;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #b33;
+    }
+
+    .success {
+      background: #effaf2;
+      color: #287a3c;
+    }
+
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 17px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .stat-number {
+      font-size: 30px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+
+      aside {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: flex;
+        gap: 7px;
+        overflow-x: auto;
+        padding: 10px 15px;
+        background: white;
+        border-bottom: 1px solid #eee;
+      }
+
+      .mobile-menu .nav-button {
+        width: auto;
+        white-space: nowrap;
+        margin: 0;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .dashboard-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+    <div class="logo">QUL</div>
+    <div>
+      QUL Admin
+    </div>
+  </div>
+
+  <button class="logout" id="logoutButton">
+    ログアウト
+  </button>
+
+</header>
+
+<div class="mobile-menu">
+
+  <button class="nav-button active" data-page="dashboard">
+    ダッシュボード
+  </button>
+
+  <button class="nav-button" data-page="news">
+    ニュース
+  </button>
+
+  <button class="nav-button" data-page="projects">
+    プロジェクト
+  </button>
+
+  <button class="nav-button" data-page="settings">
+    サイト設定
+  </button>
+
+</div>
+
+<div class="layout">
+
+  <aside>
+
+    <button class="nav-button active" data-page="dashboard">
+      ダッシュボード
+    </button>
+
+    <button class="nav-button" data-page="news">
+      ニュース
+    </button>
+
+    <button class="nav-button" data-page="projects">
+      プロジェクト
+    </button>
+
+    <button class="nav-button" data-page="settings">
+      サイト設定
+    </button>
+
+    <a
+      href="/"
+      target="_blank"
+      style="
+        display:block;
+        padding:13px 14px;
+        color:#666;
+        text-decoration:none;
+        font-size:14px;
+      "
+    >
+      サイトを見る ↗
+    </a>
+
+  </aside>
+
+  <main>
+
+    <div id="globalStatus"></div>
+
+    <!-- Dashboard -->
+
+    <section id="page-dashboard">
+
+      <div class="page-title">
+        <h1>ダッシュボード</h1>
+        <p>QUL Group 管理画面</p>
+      </div>
+
+      <div class="dashboard-cards">
+
+        <div class="stat">
+          <div class="stat-label">
+            ニュース
+          </div>
+          <div
+            class="stat-number"
+            id="newsCount"
+          >
+            -
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">
+            プロジェクト
+          </div>
+          <div
+            class="stat-number"
+            id="projectCount"
+          >
+            -
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">
+            ログインユーザー
+          </div>
+          <div
+            class="stat-number"
+            style="font-size:18px"
+            id="userEmail"
+          >
+            -
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel" style="margin-top:20px">
+
+        <h2>管理画面について</h2>
+
+        <p style="color:#777;line-height:1.8">
+          QUL GroupのWebサイトを管理するための画面です。
+          ニュース、プロジェクト、サイト基本情報を
+          Supabaseから管理できます。
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- News -->
+
+    <section id="page-news" class="hidden">
+
+      <div class="page-title">
+        <h1>ニュース</h1>
+        <p>QUL Groupのニュースを管理します。</p>
+      </div>
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h2>ニュース一覧</h2>
+
+          <button
+            class="primary"
+            id="newNewsButton"
+          >
+            ＋ 新規作成
+          </button>
+
+        </div>
+
+        <div id="newsList">
+          <div class="loading">
+            読み込み中...
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        class="panel hidden"
+        id="newsEditor"
+      >
+
+        <h2 id="newsEditorTitle">
+          ニュースを作成
+        </h2>
+
+        <input
+          type="hidden"
+          id="newsId"
+        >
+
+        <label>タイトル</label>
+
+        <input
+          id="newsTitle"
+          placeholder="ニュースタイトル"
+        >
+
+        <label>本文</label>
+
+        <textarea
+          id="newsBody"
+          placeholder="ニュース本文"
+        ></textarea>
+
+        <label class="checkbox-row">
+          <input
+            type="checkbox"
+            id="newsPublished"
+          >
+          公開する
+        </label>
+
+        <div class="form-actions">
+
+          <button
+            class="primary"
+            id="saveNewsButton"
+          >
+            保存
+          </button>
+
+          <button
+            class="secondary"
+            id="cancelNewsButton"
+          >
+            キャンセル
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Projects -->
+
+    <section id="page-projects" class="hidden">
+
+      <div class="page-title">
+        <h1>プロジェクト</h1>
+        <p>QULのサービス・プロジェクトを管理します。</p>
+      </div>
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h2>プロジェクト一覧</h2>
+
+          <button
+            class="primary"
+            id="newProjectButton"
+          >
+            ＋ 新規作成
+          </button>
+
+        </div>
+
+        <div id="projectList">
+          <div class="loading">
+            読み込み中...
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        class="panel hidden"
+        id="projectEditor"
+      >
+
+        <h2 id="projectEditorTitle">
+          プロジェクトを作成
+        </h2>
+
+        <input
+          type="hidden"
+          id="projectId"
+        >
+
+        <label>名前</label>
+
+        <input
+          id="projectName"
+          placeholder="QUL Pay"
+        >
+
+        <label>説明</label>
+
+        <textarea
+          id="projectDescription"
+          placeholder="プロジェクトの説明"
+        ></textarea>
+
+        <label>ステータス</label>
+
+        <input
+          id="projectStatus"
+          placeholder="開発中"
+        >
+
+        <label>表示順</label>
+
+        <input
+          id="projectSortOrder"
+          type="number"
+          value="0"
+        >
+
+        <label class="checkbox-row">
+          <input
+            type="checkbox"
+            id="projectVisible"
+            checked
+          >
+          サイトに表示する
+        </label>
+
+        <div class="form-actions">
+
+          <button
+            class="primary"
+            id="saveProjectButton"
+          >
+            保存
+          </button>
+
+          <button
+            class="secondary"
+            id="cancelProjectButton"
+          >
+            キャンセル
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Settings -->
+
+    <section id="page-settings" class="hidden">
+
+      <div class="page-title">
+        <h1>サイト設定</h1>
+        <p>QUL Groupサイトの基本情報を変更します。</p>
+      </div>
+
+      <div class="panel">
+
+        <label>サイト名</label>
+
+        <input
+          id="settingSiteName"
+        >
+
+        <label>サイト説明</label>
+
+        <textarea
+          id="settingDescription"
+        ></textarea>
+
+        <label>キャッチコピー</label>
+
+        <input
+          id="settingCatchcopy"
+        >
+
+        <label>ビジョン</label>
+
+        <textarea
+          id="settingVision"
+        ></textarea>
+
+        <div class="form-actions">
+
+          <button
+            class="primary"
+            id="saveSettingsButton"
+          >
+            設定を保存
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+  const SUPABASE_URL =
+    "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  /*
+    共通
+  */
+
+  function showStatus(message, type = "") {
+
+    const el =
+      document.getElementById("globalStatus");
+
+    el.className =
+      "status " + type;
+
+    el.textContent =
+      message;
+
+    setTimeout(() => {
+      el.textContent = "";
+      el.className = "";
+    }, 4000);
+  }
+
+
+  /*
+    認証確認
+  */
+
+  async function checkLogin() {
+
+    try {
+
+      const {
+        data,
+        error
+      } = await supabaseClient.auth.getSession();
+
+      if (error) {
+        throw error;
+      }
+
+      const session =
+        data.session;
+
+      if (!session) {
+
+        window.location.href =
+          window.location.origin +
+          "/admin.html";
+
+        return false;
+      }
+
+      document.getElementById("userEmail")
+        .textContent =
+        session.user.email || "-";
+
+      /*
+        管理者確認
+      */
+
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .maybeSingle();
+
+      if (profileError) {
+        console.error(profileError);
+
+        showStatus(
+          "管理者情報を確認できませんでした",
+          "error"
+        );
+
+        return false;
+      }
+
+      if (!profile || profile.role !== "admin") {
+
+        showStatus(
+          "管理者権限がありません",
+          "error"
+        );
+
+        await supabaseClient.auth.signOut();
+
+        setTimeout(() => {
+
+          window.location.href =
+            window.location.origin +
+            "/admin.html";
+
+        }, 1500);
+
+        return false;
+      }
+
+      return true;
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "認証確認エラー: " +
+        error.message,
+        "error"
+      );
+
+      return false;
+    }
+  }
+
+
+  /*
+    ページ切り替え
+  */
+
+  function openPage(page) {
+
+    document
+      .querySelectorAll("main > section")
+      .forEach(section => {
+        section.classList.add("hidden");
+      });
+
+    const target =
+      document.getElementById(
+        "page-" + page
+      );
+
+    if (target) {
+      target.classList.remove("hidden");
+    }
+
+    document
+      .querySelectorAll(".nav-button")
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.page === page
+        );
+
+      });
+
+    if (page === "news") {
+      loadNews();
+    }
+
+    if (page === "projects") {
+      loadProjects();
+    }
+
+    if (page === "settings") {
+      loadSettings();
+    }
+  }
+
+
+  document
+    .querySelectorAll(".nav-button")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const page =
+            button.dataset.page;
+
+          if (page) {
+            openPage(page);
+          }
+
+        }
+      );
+
+    });
+
+
+  /*
+    ニュース
+  */
+
+  async function loadNews() {
+
+    const list =
+      document.getElementById("newsList");
+
+    list.innerHTML =
+      '<div class="loading">読み込み中...</div>';
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("news")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
+
+    if (error) {
+
+      console.error(error);
+
+      list.innerHTML =
+        '<div class="empty">ニュースを取得できませんでした</div>';
+
+      return;
+    }
+
+    document.getElementById("newsCount")
+      .textContent =
+      data.length;
+
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">ニュースはありません</div>';
+
+      return;
+    }
+
+    list.innerHTML =
+      data.map(news => {
+
+        const published =
+          news.is_published
+            ? "公開中"
+            : "非公開";
+
+        return `
+          <div class="item">
+
+            <div class="item-title">
+              ${escapeHtml(news.title || "(無題)")}
+            </div>
+
+            <div class="item-description">
+              ${escapeHtml(news.body || "")}
+            </div>
+
+            <div style="
+              margin-top:8px;
+              font-size:12px;
+              color:#888;
+            ">
+              ${published}
+            </div>
+
+            <div class="item-actions">
+
+              <button
+                class="secondary"
+                onclick="editNews('${news.id}')"
+              >
+                編集
+              </button>
+
+              <button
+                class="danger"
+                onclick="deleteNews('${news.id}')"
+              >
+                削除
+              </button>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+  }
+
+
+  document
+    .getElementById("newNewsButton")
+    .addEventListener("click", () => {
+
+      document
+        .getElementById("newsEditor")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("newsEditorTitle")
+        .textContent =
+        "ニュースを作成";
+
+      document
+        .getElementById("newsId")
+        .value = "";
+
+      document
+        .getElementById("newsTitle")
+        .value = "";
+
+      document
+        .getElementById("newsBody")
+        .value = "";
+
+      document
+        .getElementById("newsPublished")
+        .checked = false;
+
+    });
+
+
+  async function editNews(id) {
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("news")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+
+      showStatus(
+        "ニュース取得エラー",
+        "error"
+      );
+
+      return;
+    }
+
+    document
+      .getElementById("newsEditor")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("newsEditorTitle")
+      .textContent =
+      "ニュースを編集";
+
+    document
+      .getElementById("newsId")
+      .value =
+      data.id;
+
+    document
+      .getElementById("newsTitle")
+      .value =
+      data.title || "";
+
+    document
+      .getElementById("newsBody")
+      .value =
+      data.body || "";
+
+    document
+      .getElementById("newsPublished")
+      .checked =
+      !!data.is_published;
+  }
+
+
+  document
+    .getElementById("cancelNewsButton")
+    .addEventListener("click", () => {
+
+      document
+        .getElementById("newsEditor")
+        .classList.add("hidden");
+
+    });
+
+
+  document
+    .getElementById("saveNewsButton")
+    .addEventListener("click", saveNews);
+
+
+  async function saveNews() {
+
+    const id =
+      document.getElementById("newsId").value;
+
+    const title =
+      document.getElementById("newsTitle").value.trim();
+
+    const body =
+      document.getElementById("newsBody").value;
+
+    const is_published =
+      document.getElementById("newsPublished").checked;
+
+    if (!title) {
+
+      showStatus(
+        "タイトルを入力してください",
+        "error"
+      );
+
+      return;
+    }
+
+    const payload = {
+      title,
+      body,
+      is_published,
+      updated_at: new Date().toISOString()
+    };
+
+    let result;
+
+    if (id) {
+
+      result =
+        await supabaseClient
+          .from("news")
+          .update(payload)
+          .eq("id", id);
+
+    } else {
+
+      result =
+        await supabaseClient
+          .from("news")
+          .insert([payload]);
+
+    }
+
+    if (result.error) {
+
+      console.error(result.error);
+
+      showStatus(
+        "保存に失敗しました: " +
+        result.error.message,
+        "error"
+      );
+
+      return;
+    }
+
+    showStatus(
+      "ニュースを保存しました",
+      "success"
+    );
+
+    document
+      .getElementById("newsEditor")
+      .classList.add("hidden");
+
+    loadNews();
+  }
+
+
+  async function deleteNews(id) {
+
+    if (!confirm(
+      "このニュースを削除しますか？"
+    )) {
+      return;
+    }
+
+    const {
+      error
+    } = aw
