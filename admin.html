@@ -1,1151 +1,1133 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QUL Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUL Admin</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-:root{
-  --blue:#809CCF;
-  --dark:#172033;
-  --bg:#f5f7fb;
-  --card:#fff;
-  --border:#e5e9f2;
-  --danger:#e85d75;
-}
+  <style>
+    :root {
+      --blue: #809CCF;
+      --blue-dark: #6383bd;
+      --text: #202124;
+      --sub: #6b7280;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --danger: #dc3545;
+      --success: #198754;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Segoe UI",sans-serif;
-  background:var(--bg);
-  color:var(--dark);
-}
+    body {
+      margin: 0;
+      font-family:
+        "Noto Sans JP",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
 
-button,input,textarea,select{
-  font:inherit;
-}
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
 
-button{
-  cursor:pointer;
-}
+    button {
+      cursor: pointer;
+    }
 
-.hidden{
-  display:none!important;
-}
+    .hidden {
+      display: none !important;
+    }
 
-/* Login */
-#loginScreen{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
+    /* =========================
+       LOGIN
+    ========================= */
 
-.login-card{
-  width:100%;
-  max-width:420px;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:32px;
-  box-shadow:0 15px 45px rgba(20,35,65,.08);
-}
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(128,156,207,.22),
+          transparent 45%
+        ),
+        var(--bg);
+    }
 
-.logo{
-  font-size:32px;
-  font-weight:800;
-  letter-spacing:.05em;
-  margin-bottom:6px;
-}
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 24px;
+      padding: 34px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.08);
+    }
 
-.logo span{
-  color:var(--blue);
-}
+    .logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: var(--blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
 
-.subtitle{
-  color:#737b8c;
-  margin-bottom:28px;
-}
+    .login-card h1 {
+      margin: 0 0 8px;
+      font-size: 27px;
+    }
 
-.field{
-  margin-bottom:16px;
-}
+    .login-card p {
+      margin: 0 0 28px;
+      color: var(--sub);
+      font-size: 14px;
+    }
 
-.field label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:7px;
-}
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-.field input,
-.field textarea,
-.field select{
-  width:100%;
-  padding:12px 14px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:#fff;
-  outline:none;
-}
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
 
-.field input:focus,
-.field textarea:focus,
-.field select:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(128,156,207,.15);
-}
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      background: white;
+      transition: .2s;
+    }
 
-.field textarea{
-  min-height:120px;
-  resize:vertical;
-}
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(128,156,207,.15);
+    }
 
-.primary{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  padding:13px;
-  background:var(--blue);
-  color:white;
-  font-weight:700;
-}
+    .form-group textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
 
-.primary:hover{
-  opacity:.9;
-}
+    .primary-button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 16px;
+      background: var(--blue);
+      color: white;
+      font-weight: 700;
+      transition: .2s;
+    }
 
-.error{
-  margin-top:14px;
-  padding:11px 13px;
-  border-radius:10px;
-  background:#fff0f2;
-  color:#c43f57;
-  font-size:13px;
-}
+    .primary-button:hover {
+      background: var(--blue-dark);
+    }
 
-/* Admin */
-#adminScreen{
-  min-height:100vh;
-}
+    .primary-button:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
 
-.header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  height:68px;
-  background:rgba(255,255,255,.9);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
-}
+    .login-error {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fff0f1;
+      color: var(--danger);
+      font-size: 13px;
+      line-height: 1.6;
+    }
 
-.header-logo{
-  font-size:22px;
-  font-weight:800;
-}
+    .login-status {
+      margin-top: 15px;
+      text-align: center;
+      color: var(--sub);
+      font-size: 13px;
+    }
 
-.header-logo span{
-  color:var(--blue);
-}
+    /* =========================
+       ADMIN
+    ========================= */
 
-.header-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    #adminScreen {
+      min-height: 100vh;
+    }
 
-.user-email{
-  font-size:13px;
-  color:#737b8c;
-}
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
 
-.logout{
-  border:1px solid var(--border);
-  background:white;
-  padding:8px 13px;
-  border-radius:10px;
-}
+    .admin-header-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
 
-.container{
-  width:min(1100px,calc(100% - 32px));
-  margin:32px auto 60px;
-}
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.tabs{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  margin-bottom:24px;
-}
+    .admin-brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
 
-.tab{
-  border:1px solid var(--border);
-  background:white;
-  padding:10px 16px;
-  border-radius:12px;
-  white-space:nowrap;
-}
+    .admin-brand-text strong {
+      display: block;
+      font-size: 15px;
+    }
 
-.tab.active{
-  background:var(--blue);
-  color:white;
-  border-color:var(--blue);
-}
+    .admin-brand-text span {
+      color: var(--sub);
+      font-size: 11px;
+    }
 
-.panel{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:24px;
-  margin-bottom:20px;
-}
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.panel-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
-}
+    .user-email {
+      color: var(--sub);
+      font-size: 12px;
+    }
 
-.panel h2{
-  margin:0;
-  font-size:20px;
-}
+    .logout-button {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+    }
 
-.small{
-  color:#7c8493;
-  font-size:13px;
-}
+    .logout-button:hover {
+      background: #f8f8f8;
+    }
 
-.list{
-  display:grid;
-  gap:12px;
-}
+    .admin-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 28px 20px 60px;
+    }
 
-.item{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:16px;
-}
+    .dashboard-title {
+      margin-bottom: 24px;
+    }
 
-.item-title{
-  font-weight:750;
-  margin-bottom:6px;
-}
+    .dashboard-title h1 {
+      margin: 0 0 5px;
+      font-size: 30px;
+    }
 
-.item-meta{
-  color:#7c8493;
-  font-size:12px;
-  margin-bottom:8px;
-}
+    .dashboard-title p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
 
-.item-body{
-  color:#4d5667;
-  white-space:pre-wrap;
-  line-height:1.6;
-}
+    /* =========================
+       TABS
+    ========================= */
 
-.item-actions{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
-}
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 22px;
+      padding-bottom: 3px;
+    }
 
-.secondary,
-.danger{
-  border:1px solid var(--border);
-  background:white;
-  padding:8px 12px;
-  border-radius:9px;
-}
+    .tab-button {
+      border: 0;
+      background: white;
+      border-radius: 12px;
+      padding: 11px 17px;
+      white-space: nowrap;
+      color: var(--sub);
+      font-weight: 700;
+    }
 
-.danger{
-  color:var(--danger);
-}
+    .tab-button.active {
+      background: var(--blue);
+      color: white;
+    }
 
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
+    .panel {
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.04);
+      border: 1px solid rgba(0,0,0,.03);
+    }
 
-.form-grid .full{
-  grid-column:1 / -1;
-}
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
 
-.checkbox{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:14px;
-}
+    .panel-header h2 {
+      margin: 0;
+      font-size: 19px;
+    }
 
-.status{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:999px;
-  background:#eef2f8;
-  font-size:11px;
-}
+    .secondary-button {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 700;
+    }
 
-.empty{
-  text-align:center;
-  padding:35px 15px;
-  color:#858d9b;
-}
+    .secondary-button:hover {
+      background: #f8f9fb;
+    }
 
-.notice{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  background:#172033;
-  color:white;
-  padding:12px 16px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  z-index:100;
-  max-width:320px;
-}
+    .save-button {
+      border: 0;
+      background: var(--blue);
+      color: white;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-weight: 700;
+    }
 
-@media(max-width:700px){
-  .header{
-    padding:0 16px;
-  }
+    /* =========================
+       NEWS / PROJECT CARDS
+    ========================= */
 
-  .user-email{
-    display:none;
-  }
+    .item-list {
+      display: grid;
+      gap: 12px;
+    }
 
-  .container{
-    width:min(100% - 20px,1100px);
-    margin-top:20px;
-  }
+    .item-card {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 16px;
+    }
 
-  .panel{
-    padding:18px;
-    border-radius:17px;
-  }
+    .item-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+    }
 
-  .form-grid{
-    grid-template-columns:1fr;
-  }
+    .item-title {
+      margin: 0 0 5px;
+      font-size: 16px;
+      font-weight: 800;
+    }
 
-  .form-grid .full{
-    grid-column:auto;
-  }
-}
-</style>
+    .item-body {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .edit-button,
+    .delete-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .edit-button {
+      background: #eef3fb;
+      color: #5274af;
+    }
+
+    .delete-button {
+      background: #fff0f1;
+      color: var(--danger);
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .badge-on {
+      background: #e9f7ef;
+      color: var(--success);
+    }
+
+    .badge-off {
+      background: #f1f2f4;
+      color: #777;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.35);
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close-button {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: #f2f3f5;
+      font-size: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-actions button {
+      width: auto;
+    }
+
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    .settings-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .setting-row {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+    }
+
+    .setting-key {
+      font-size: 11px;
+      color: var(--sub);
+      margin-bottom: 7px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translateX(-50%) translateY(20px);
+      background: #202124;
+      color: white;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 200;
+      max-width: calc(100% - 40px);
+      text-align: center;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #toast.success {
+      background: var(--success);
+    }
+
+    #toast.error {
+      background: var(--danger);
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 35px;
+      color: var(--sub);
+      font-size: 13px;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+      .admin-header-inner {
+        padding: 12px 15px;
+      }
+
+      .user-email {
+        display: none;
+      }
+
+      .admin-container {
+        padding: 20px 14px 45px;
+      }
+
+      .dashboard-title h1 {
+        font-size: 25px;
+      }
+
+      .panel {
+        padding: 16px;
+        border-radius: 17px;
+      }
+
+      .item-card-top {
+        flex-direction: column;
+      }
+
+      .item-actions {
+        width: 100%;
+      }
+
+      .item-actions button {
+        flex: 1;
+      }
+
+      .login-card {
+        padding: 26px 21px;
+        border-radius: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<section id="loginScreen">
-  <div class="login-card">
-    <div class="logo">QUL<span>.</span></div>
-    <div class="subtitle">QUL Group 管理画面</div>
+  <!-- =========================
+       LOGIN SCREEN
+  ========================= -->
 
-    <form id="loginForm">
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" type="email" autocomplete="username" required>
-      </div>
+  <section id="loginScreen">
 
-      <div class="field">
-        <label for="password">パスワード</label>
-        <input id="password" type="password" autocomplete="current-password" required>
-      </div>
+    <div class="login-card">
 
-      <button class="primary" type="submit">
-        ログイン
-      </button>
+      <div class="logo">Q</div>
 
-      <div id="loginError" class="error hidden"></div>
-    </form>
-  </div>
-</section>
+      <h1>QUL Admin</h1>
 
+      <p>
+        QUL Group 管理画面へログイン
+      </p>
 
-<!-- ADMIN -->
-<section id="adminScreen" class="hidden">
+      <form id="loginForm">
 
-  <header class="header">
-    <div class="header-logo">QUL<span> Admin</span></div>
-
-    <div class="header-actions">
-      <div id="userEmail" class="user-email"></div>
-      <button id="logoutBtn" class="logout">ログアウト</button>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <nav class="tabs">
-      <button class="tab active" data-tab="news">ニュース</button>
-      <button class="tab" data-tab="projects">プロジェクト</button>
-      <button class="tab" data-tab="settings">サイト設定</button>
-    </nav>
-
-
-    <!-- NEWS -->
-    <section id="newsPanel" class="panel">
-      <div class="panel-head">
-        <div>
-          <h2>ニュース管理</h2>
-          <div class="small">QUL公式サイトのニュースを管理</div>
-        </div>
-        <button id="newNewsBtn" class="primary" style="width:auto">
-          ＋ 新規追加
-        </button>
-      </div>
-
-      <div id="newsFormArea" class="hidden">
-        <div class="panel" style="background:#f8f9fc">
-
-          <form id="newsForm">
-
-            <input type="hidden" id="newsId">
-
-            <div class="form-grid">
-
-              <div class="field full">
-                <label>タイトル</label>
-                <input id="newsTitle" required>
-              </div>
-
-              <div class="field full">
-                <label>本文</label>
-                <textarea id="newsBody"></textarea>
-              </div>
-
-              <div class="field">
-                <label>公開日時</label>
-                <input id="newsPublishedAt" type="datetime-local">
-              </div>
-
-              <div class="field">
-                <label>公開状態</label>
-                <label class="checkbox">
-                  <input id="newsPublished" type="checkbox">
-                  公開する
-                </label>
-              </div>
-
-            </div>
-
-            <div class="item-actions">
-              <button class="primary" type="submit" style="width:auto">
-                保存
-              </button>
-
-              <button type="button" id="cancelNewsBtn" class="secondary">
-                キャンセル
-              </button>
-            </div>
-
-          </form>
-        </div>
-      </div>
-
-      <div id="newsList" class="list"></div>
-    </section>
-
-
-    <!-- PROJECTS -->
-    <section id="projectsPanel" class="panel hidden">
-
-      <div class="panel-head">
-        <div>
-          <h2>プロジェクト管理</h2>
-          <div class="small">QULのプロジェクト情報を管理</div>
+        <div class="form-group">
+          <label for="email">メールアドレス</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="username"
+            placeholder="admin@example.com"
+            required
+          >
         </div>
 
-        <button id="newProjectBtn" class="primary" style="width:auto">
-          ＋ 新規追加
-        </button>
-      </div>
-
-      <div id="projectFormArea" class="hidden">
-
-        <div class="panel" style="background:#f8f9fc">
-
-          <form id="projectForm">
-
-            <input type="hidden" id="projectId">
-
-            <div class="form-grid">
-
-              <div class="field">
-                <label>プロジェクト名</label>
-                <input id="projectName" required>
-              </div>
-
-              <div class="field">
-                <label>ステータス</label>
-                <input id="projectStatus" placeholder="開発中 / 構想中 / 提供予定 など">
-              </div>
-
-              <div class="field full">
-                <label>説明</label>
-                <textarea id="projectDescription"></textarea>
-              </div>
-
-              <div class="field">
-                <label>表示順</label>
-                <input id="projectSort" type="number" value="0">
-              </div>
-
-              <div class="field">
-                <label>表示設定</label>
-                <label class="checkbox">
-                  <input id="projectVisible" type="checkbox" checked>
-                  サイトに表示する
-                </label>
-              </div>
-
-            </div>
-
-            <div class="item-actions">
-              <button class="primary" type="submit" style="width:auto">
-                保存
-              </button>
-
-              <button type="button" id="cancelProjectBtn" class="secondary">
-                キャンセル
-              </button>
-            </div>
-
-          </form>
-        </div>
-      </div>
-
-      <div id="projectList" class="list"></div>
-
-    </section>
-
-
-    <!-- SETTINGS -->
-    <section id="settingsPanel" class="panel hidden">
-
-      <div class="panel-head">
-        <div>
-          <h2>サイト設定</h2>
-          <div class="small">QUL公式サイトの基本情報</div>
-        </div>
-      </div>
-
-      <form id="settingsForm">
-
-        <div class="field">
-          <label>サイト名</label>
-          <input id="settingSiteName">
+        <div class="form-group">
+          <label for="password">パスワード</label>
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="パスワード"
+            required
+          >
         </div>
 
-        <div class="field">
-          <label>サイト説明</label>
-          <textarea id="settingSiteDescription"></textarea>
-        </div>
-
-        <div class="field">
-          <label>キャッチコピー</label>
-          <input id="settingCatchcopy">
-        </div>
-
-        <div class="field">
-          <label>Vision</label>
-          <textarea id="settingVision"></textarea>
-        </div>
-
-        <button class="primary" type="submit" style="width:auto">
-          設定を保存
+        <button
+          id="loginButton"
+          class="primary-button"
+          type="submit"
+        >
+          ログイン
         </button>
 
       </form>
 
-    </section>
+      <div
+        id="loginError"
+        class="login-error hidden"
+      ></div>
 
-  </main>
+      <div
+        id="loginStatus"
+        class="login-status hidden"
+      ></div>
 
-</section>
+    </div>
 
-<div id="notice" class="notice hidden"></div>
+  </section>
 
 
-<script>
-/* ==============================
-   Supabase
-============================== */
+  <!-- =========================
+       ADMIN SCREEN
+  ========================= -->
 
-const SUPABASE_URL =
-  "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+  <section id="adminScreen" class="hidden">
 
-const SUPABASE_KEY =
-  "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+    <header class="admin-header">
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+      <div class="admin-header-inner">
 
+        <div class="admin-brand">
 
-/* ==============================
-   Elements
-============================== */
+          <div class="admin-brand-mark">
+            Q
+          </div>
 
-const loginScreen = document.getElementById("loginScreen");
-const adminScreen = document.getElementById("adminScreen");
-const loginForm = document.getElementById("loginForm");
-const loginError = document.getElementById("loginError");
-const userEmail = document.getElementById("userEmail");
+          <div class="admin-brand-text">
+            <strong>QUL Admin</strong>
+            <span>Management Console</span>
+          </div>
 
-const newsPanel = document.getElementById("newsPanel");
-const projectsPanel = document.getElementById("projectsPanel");
-const settingsPanel = document.getElementById("settingsPanel");
-
-
-/* ==============================
-   Helpers
-============================== */
-
-function showNotice(message){
-  const el = document.getElementById("notice");
-
-  el.textContent = message;
-  el.classList.remove("hidden");
-
-  clearTimeout(window.noticeTimer);
-
-  window.noticeTimer = setTimeout(()=>{
-    el.classList.add("hidden");
-  },2500);
-}
-
-function showLoginError(message){
-  loginError.textContent = message;
-  loginError.classList.remove("hidden");
-}
-
-function escapeHTML(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function formatDate(value){
-  if(!value) return "";
-
-  const d = new Date(value);
-
-  if(Number.isNaN(d.getTime())) return "";
-
-  return d.toLocaleString("ja-JP");
-}
-
-
-/* ==============================
-   Authentication
-============================== */
-
-async function checkSession(){
-
-  const {
-    data:{
-      session
-    }
-  } = await supabaseClient.auth.getSession();
-
-  if(!session){
-    showLogin();
-    return;
-  }
-
-  await checkAdmin(session.user);
-}
-
-
-async function checkAdmin(user){
-
-  const {
-    data:profile,
-    error
-  } = await supabaseClient
-    .from("profiles")
-    .select("id,role")
-    .eq("id",user.id)
-    .maybeSingle();
-
-  if(error){
-    console.error(error);
-
-    showLogin();
-
-    showLoginError(
-      "管理者情報を確認できませんでした。"
-    );
-
-    return;
-  }
-
-  if(!profile || profile.role !== "admin"){
-
-    await supabaseClient.auth.signOut();
-
-    showLogin();
-
-    showLoginError(
-      "このアカウントには管理者権限がありません。"
-    );
-
-    return;
-  }
-
-  showAdmin(user);
-}
-
-
-function showLogin(){
-
-  loginScreen.classList.remove("hidden");
-  adminScreen.classList.add("hidden");
-
-  userEmail.textContent = "";
-}
-
-
-function showAdmin(user){
-
-  loginScreen.classList.add("hidden");
-  adminScreen.classList.remove("hidden");
-
-  userEmail.textContent =
-    user.email || "";
-
-  loadNews();
-}
-
-
-/* Login */
-
-loginForm.addEventListener("submit",async(e)=>{
-
-  e.preventDefault();
-
-  loginError.classList.add("hidden");
-
-  const email =
-    document.getElementById("email").value.trim();
-
-  const password =
-    document.getElementById("password").value;
-
-  const button =
-    loginForm.querySelector("button");
-
-  button.disabled = true;
-  button.textContent = "ログイン中…";
-
-  try{
-
-    const {
-      data,
-      error
-    } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if(error){
-      throw error;
-    }
-
-    if(!data.user){
-      throw new Error("ユーザー情報を取得できませんでした");
-    }
-
-    await checkAdmin(data.user);
-
-  }catch(error){
-
-    console.error(error);
-
-    showLoginError(
-      error.message ||
-      "ログインに失敗しました。"
-    );
-
-  }finally{
-
-    button.disabled = false;
-    button.textContent = "ログイン";
-
-  }
-
-});
-
-
-/* Logout */
-
-document.getElementById("logoutBtn")
-.addEventListener("click",async()=>{
-
-  await supabaseClient.auth.signOut();
-
-  showLogin();
-
-  showNotice("ログアウトしました");
-
-});
-
-
-/* ==============================
-   Tabs
-============================== */
-
-document.querySelectorAll(".tab")
-.forEach(tab=>{
-
-  tab.addEventListener("click",()=>{
-
-    document
-      .querySelectorAll(".tab")
-      .forEach(t=>t.classList.remove("active"));
-
-    tab.classList.add("active");
-
-    const target =
-      tab.dataset.tab;
-
-    newsPanel.classList.add("hidden");
-    projectsPanel.classList.add("hidden");
-    settingsPanel.classList.add("hidden");
-
-    if(target === "news"){
-      newsPanel.classList.remove("hidden");
-      loadNews();
-    }
-
-    if(target === "projects"){
-      projectsPanel.classList.remove("hidden");
-      loadProjects();
-    }
-
-    if(target === "settings"){
-      settingsPanel.classList.remove("hidden");
-      loadSettings();
-    }
-
-  });
-
-});
-
-
-/* ==============================
-   NEWS
-============================== */
-
-async function loadNews(){
-
-  const list =
-    document.getElementById("newsList");
-
-  list.innerHTML =
-    '<div class="empty">読み込み中…</div>';
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("news")
-    .select("*")
-    .order("created_at",{ascending:false});
-
-  if(error){
-
-    list.innerHTML =
-      `<div class="empty">
-        ニュースを読み込めませんでした。<br>
-        ${escapeHTML(error.message)}
-      </div>`;
-
-    return;
-  }
-
-  if(!data || data.length === 0){
-
-    list.innerHTML =
-      '<div class="empty">ニュースはまだありません。</div>';
-
-    return;
-  }
-
-  list.innerHTML =
-    data.map(item=>`
-
-      <article class="item">
-
-        <div class="item-title">
-          ${escapeHTML(item.title)}
         </div>
 
-        <div class="item-meta">
-          ${item.is_published ? "公開中" : "非公開"}
-          ${item.published_at ? " ・ " + escapeHTML(formatDate(item.published_at)) : ""}
-        </div>
+        <div class="header-actions">
 
-        <div class="item-body">
-          ${escapeHTML(item.body)}
-        </div>
-
-        <div class="item-actions">
+          <span
+            id="userEmail"
+            class="user-email"
+          ></span>
 
           <button
-            class="secondary"
-            onclick="editNews('${item.id}')">
-            編集
-          </button>
-
-          <button
-            class="danger"
-            onclick="deleteNews('${item.id}')">
-            削除
+            id="logoutButton"
+            class="logout-button"
+            type="button"
+          >
+            ログアウト
           </button>
 
         </div>
 
-      </article>
+      </div>
 
-    `).join("");
+    </header>
 
-}
 
+    <main class="admin-container">
 
-document.getElementById("newNewsBtn")
-.addEventListener("click",()=>{
+      <div class="dashboard-title">
+        <h1>管理画面</h1>
+        <p>QUL Group のコンテンツを管理します。</p>
+      </div>
 
-  document.getElementById("newsForm").reset();
 
-  document.getElementById("newsId").value = "";
+      <!-- TABS -->
 
-  document.getElementById("newsFormArea")
-    .classList.remove("hidden");
+      <div class="tabs">
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+        <button
+          class="tab-button active"
+          data-tab="news"
+          type="button"
+        >
+          ニュース
+        </button>
 
-});
+        <button
+          class="tab-button"
+          data-tab="projects"
+          type="button"
+        >
+          プロジェクト
+        </button>
 
+        <button
+          class="tab-button"
+          data-tab="settings"
+          type="button"
+        >
+          サイト設定
+        </button>
 
-document.getElementById("cancelNewsBtn")
-.addEventListener("click",()=>{
+      </div>
 
-  document.getElementById("newsFormArea")
-    .classList.add("hidden");
 
-});
+      <!-- =========================
+           NEWS
+      ========================= -->
 
+      <section
+        id="panel-news"
+        class="panel"
+      >
 
-document.getElementById("newsForm")
-.addEventListener("submit",async(e)=>{
+        <div class="panel-header">
 
-  e.preventDefault();
+          <h2>ニュース管理</h2>
 
-  const id =
-    document.getElementById("newsId").value;
+          <button
+            id="addNewsButton"
+            class="save-button"
+            type="button"
+          >
+            ＋ ニュース追加
+          </button>
 
-  const title =
-    document.getElementById("newsTitle").value.trim();
+        </div>
 
-  const body =
-    document.getElementById("newsBody").value.trim();
+        <div
+          id="newsList"
+          class="item-list"
+        >
+          <div class="loading">
+            読み込み中…
+          </div>
+        </div>
 
-  const published =
-    document.getElementById("newsPublished").checked;
+      </section>
 
-  const publishedAtRaw =
-    document.getElementById("newsPublishedAt").value;
 
-  const publishedAt =
-    publishedAtRaw
-      ? new Date(publishedAtRaw).toISOString()
-      : null;
+      <!-- =========================
+           PROJECTS
+      ========================= -->
 
-  const payload = {
-    title,
-    body,
-    is_published:published,
-    published_at:publishedAt,
-    updated_at:new Date().toISOString()
-  };
+      <section
+        id="panel-projects"
+        class="panel hidden"
+      >
 
-  let result;
+        <div class="panel-header">
 
-  if(id){
+          <h2>プロジェクト管理</h2>
 
-    result =
-      await supabaseClient
-        .from("news")
-        .update(payload)
-        .eq("id",id);
+          <button
+            id="addProjectButton"
+            class="save-button"
+            type="button"
+          >
+            ＋ プロジェクト追加
+          </button>
 
-  }else{
+        </div>
 
-    result =
-      await supabaseClient
-        .from("news")
-        .insert(payload);
+        <div
+          id="projectsList"
+          class="item-list"
+        >
+          <div class="loading">
+            読み込み中…
+          </div>
+        </div>
 
-  }
+      </section>
 
-  if(result.error){
 
-    alert(
-      "保存に失敗しました。\n\n" +
-      result.error.message
-    );
+      <!-- =========================
+           SETTINGS
+      ========================= -->
 
-    return;
-  }
+      <section
+        id="panel-settings"
+        class="panel hidden"
+      >
 
-  document.getElementById("newsFormArea")
-    .classList.add("hidden");
+        <div class="panel-header">
 
-  showNotice("ニュースを保存しました");
+          <h2>サイト設定</h2>
 
-  loadNews();
+          <button
+            id="saveSettingsButton"
+            class="save-button"
+            type="button"
+          >
+            保存
+          </button>
 
-});
+        </div>
 
+        <div
+          id="settingsForm"
+          class="settings-grid"
+        >
 
-window.editNews = async function(id){
+          <div class="loading">
+            読み込み中…
+          </div>
 
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("news")
-    .select("*")
-    .eq("id",id)
-    .single();
+        </div>
 
-  if(error){
+      </section>
 
-    alert(error.message);
+    </main>
 
-    return;
-  }
+  </section>
 
-  document.getElementById("newsId").value =
-    data.id;
 
-  document.getElementById("newsTitle").value =
-    data.title || "";
+  <!-- =========================
+       NEWS MODAL
+  ========================= -->
 
-  document.getElementById("newsBody").value =
-    data.body || "";
+  <div
+    id="newsModal"
+    class="modal hidden"
+  >
 
-  document.getElementById("newsPublished").checked =
-    !!data.is_published;
+    <div class="modal-card">
 
-  if(data.published_at){
+      <div class="modal-header">
 
-    const d =
-      new Date(data.published_at);
+        <h2 id="newsModalTitle">
+          ニュース追加
+        </h2>
 
-    const local =
-      new Date(
-        d.getTime() -
-        d.getTimezoneOffset()*60000
-      )
-      .toISOString()
-      .slice(0,16);
+        <button
+          id="closeNewsModal"
+          class="close-button"
+          type="button"
+        >
+          ×
+        </button>
 
-    document.getElementById("newsPublishedAt").value =
-      local;
+      </div>
 
-  }else{
+      <input
+        id="newsId"
+        type="hidden"
+      >
 
-    document.getElementById("newsPublishedAt").value =
-      "";
+      <div class="form-group">
 
-  }
+        <label for="newsTitle">
+          タイトル
+        </label>
 
-  document.getElementById("newsFormArea")
-    .classList.remove("hidden");
+        <input
+          id="newsTitle"
+          type="text"
+          placeholder="ニュースタイトル"
+        >
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+      </div>
 
-};
+      <div class="form-group">
 
+        <label for="newsBody">
+          内容
+        </label>
 
-window.deleteNews = async function(id){
+        <textarea
+          id="newsBody"
+          placeholder="ニュース内容"
+        ></textarea>
 
-  if(!confirm("このニュースを削除しますか？")){
-    return;
-  }
+      </div>
 
-  const {
-    error
-  } = await supabaseClient
-    .from("news")
-    .delete()
-    .eq("id",id);
+      <div class="form-group">
 
-  if(error){
+        <label for="newsPublished">
+          公開状態
+        </label>
 
-    alert(error.message);
+        <select id="newsPublished">
+          <option value="true">公開</option>
+          <option value="false">非公開</option>
+        </select>
 
-    return;
-  }
+      </div>
 
-  showNotice("ニュースを削除しました");
+      <div class="modal-actions">
 
-  loadNews();
+        <button
+          id="cancelNews"
+          class="secondary-button"
+          type="button"
+        >
+          キャンセル
+        </button>
 
-};
+        <button
+          id="saveNews"
+          class="save-button"
+          type="button"
+        >
+          保存
+        </button>
 
+      </div>
 
-/* ==============================
-   PROJECTS
-============================== */
+    </div>
 
-async function loadProjects(){
+  </div>
 
-  const list =
-    document.getElementById("projectList");
 
-  list.innerHTML =
-    '<div class="empty">読み込み中…</div>';
+  <!-- =========================
+       PROJECT MODAL
+  ========================= -->
 
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("projects")
-    .select("*")
-    .order("sort_order",{ascending:true})
-    .order("created_at",{ascending:true});
+  <div
+    id="projectModal"
+    class="modal hidden"
+  >
 
-  if(error){
+    <div class="modal-card">
 
-    list.innerHTML =
+      <div class="modal-header">
+
+        <h2 id="projectModalTitle">
+          プロジェクト追加
+        </h2>
+
+        <button
+          id="closeProjectModal"
+          class="close-button"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <input
+        id="projectId"
+        type="hidden"
+      >
+
+      <div class="form-group">
+
+        <label for="projectName">
+          プロジェクト名
+        </label>
+
+        <input
+          id="projectName"
+          type="text"
+          placeholder="QUL Pay"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="projectDescription">
+          説明
+        </label>
+
+        <textarea
+          id="projectDescription"
+          placeholder="プロジェクトの説明"
+        ></textarea>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="projectStatus">
+          ステータス
+        </label>
+
+        <input
+          id="projectStatus"
+          type="text"
+          placeholder="開発中"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="projectOrder">
+          表示順
+        </label>
+
+        <input
+          id="projectOrder"
+          type="number"
+          value="0"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="projectVisible">
+          表示設定
+        </label>
+
+        <select id="projectVisible">
+          <option value="true">表示</option>
+          <option value="false">非表示</option>
+        </select>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          id="cancelProject"
+          class="secondary-button"
+          type="button"
+        >
+          キャンセル
+        </button>
+
+        <button
+          id="saveProject"
+          class="save-button"
+          type="button"
+        >
+          保存
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+
+  <script>
+
+    /* =====================================================
+       SUPABASE
+    ===================================================== */
+
+    const SUPABASE_URL =
+      "https://vfdqblzbdtxbuhjxzdoq.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_i3DQ3L8XomaERcHOoEvGqA_AoL2Ayqn";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const loginScreen =
+      document.getElementById("loginScreen");
+
+    const adminScreen =
+      document.getElementById("adminScreen");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const loginError =
  
